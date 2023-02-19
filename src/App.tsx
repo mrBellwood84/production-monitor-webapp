@@ -1,24 +1,44 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { Button } from '@mui/material';
+import { useEffect, useState } from 'react';
+import { Gauge } from './Views/Graph/Gauge/Gauge';
+import { IGaugeValues } from './Views/Graph/Gauge/lib/IGaugeValues';
 
 function App() {
+
+    const [values, setValues] = useState<IGaugeValues>()
+
+    const gaugeSkew = 0;
+
+    const changeValue = (value: number) => {
+        if (!values) return
+        const newVal: IGaugeValues = {
+            ...values,
+            count: values.count += value,
+        }
+
+        setValues(newVal)
+    }
+
+    useEffect(() => {
+        const setGaugeValues = () => {
+            const gv: IGaugeValues = {
+                min: 0,
+                max: 100,
+                count: 0,
+            }
+            setValues(gv);
+        }
+        setGaugeValues();
+    },[setValues])
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+        {values && (
+            <Gauge height={300} width={400} skew={gaugeSkew} values={values} />
+        )}
+        <br/>
+        <Button onClick={() => changeValue(5)}>Increment</Button>
+        <Button onClick={() => changeValue(-5)}>Decrement</Button>
     </div>
   );
 }
