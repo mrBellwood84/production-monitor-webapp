@@ -18,6 +18,9 @@ export const drawGauge = (
     drawGaugePart(ctx, props, arch.yellowBreak, arch.greenBreak, "yellow");
     drawGaugePart(ctx, props, arch.greenBreak, arch.angleEnd, "lightgreen");
 
+    ctx.shadowColor = "#444";
+    ctx.shadowBlur = 2.5;
+
     drawHand(ctx, props, values);
     drawText(ctx, props, values)
 

@@ -17,8 +17,8 @@ export const calcGaugeHand = (values: IGaugeValues, props: IGaugeProps) => {
     const x1 = (props.radiusGauge * 1.2) * x;
     const y1 = (props.radiusGauge * 1.2) * y;
 
-    const x2 = (props.radiusGauge * 0.5) * x;
-    const y2 = (props.radiusGauge * 0.5) * y;
+    const x2 = (props.radiusGauge * 0.7) * x;
+    const y2 = (props.radiusGauge * 0.7) * y;
 
     const res: IGaugeHandCoordinates = {
         x1: -x1,
