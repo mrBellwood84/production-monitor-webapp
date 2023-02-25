@@ -1,5 +1,7 @@
 body {
-    min-height: 100vh;
-    min-width: 100vw;
     user-select: none;
+}
+
+canvas {
+    border: 1px solid blue;
 }
