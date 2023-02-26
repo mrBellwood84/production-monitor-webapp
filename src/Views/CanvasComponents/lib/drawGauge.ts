@@ -1,3 +1,4 @@
+import { height } from "@mui/system";
 import { IGaugeProps, IGaugeValues } from "./IGaugeProps"
 
 export const drawDoubleGauge = (
@@ -6,27 +7,67 @@ export const drawDoubleGauge = (
     values: IGaugeValues
 ) => {
 
-    ctx.save();
-    ctx.clearRect(0,0,props.width, props.height)
-    ctx.translate(props.center_x, props.center_y);
+    
+    try {
+        ctx.clearRect(0, 0, props.width, props.height)
+        ctx.translate(props.center_x, props.center_y);
 
-    drawMainGaugePart(ctx, props, 0.75 * Math.PI, 1.25 * Math.PI, "red")
-    drawMainGaugePart(ctx, props, 1.25 * Math.PI, 1.75 * Math.PI, "yellow")
-    drawMainGaugePart(ctx, props, 1.75 * Math.PI, 2.25 * Math.PI, "green")
+        ctx.shadowBlur = 0;
+        drawHeader(ctx, props)
 
-    drawTopGaugePart(ctx, props, 1.25 * Math.PI, (1.25 + (0.5 / 3)) * Math.PI, "red")
-    drawTopGaugePart(ctx, props, (1.25 + (0.5 / 3)) * Math.PI, (1.25 + (0.5 / 3 * 2)) * Math.PI, "yellow")
-    drawTopGaugePart(ctx, props, (1.25 + (0.5 / 3 * 2)) * Math.PI, 1.75 * Math.PI, "green" );
+        drawMainGaugePart(ctx, props, 0.75 * Math.PI, 1.25 * Math.PI, "red")
+        drawMainGaugePart(ctx, props, 1.25 * Math.PI, 1.75 * Math.PI, "yellow")
+        drawMainGaugePart(ctx, props, 1.75 * Math.PI, 2.25 * Math.PI, "green")
 
-    ctx.shadowColor = "#111";
-    ctx.shadowBlur = 2.5;
+        drawTopGaugePart(ctx, props, 1.25 * Math.PI, (1.25 + (0.5 / 3)) * Math.PI, "red")
+        drawTopGaugePart(ctx, props, (1.25 + (0.5 / 3)) * Math.PI, (1.25 + (0.5 / 3 * 2)) * Math.PI, "yellow")
+        drawTopGaugePart(ctx, props, (1.25 + (0.5 / 3 * 2)) * Math.PI, 1.75 * Math.PI, "green" );
 
-    drawMainHand(ctx,props, values)
-    drawTopHand(ctx,props, values)
+        ctx.shadowColor = "#555"
+        ctx.shadowBlur = 2;
 
-    ctx.restore()
+        drawMainHand(ctx,props, values)
+        drawTopHand(ctx,props, values)
+
+        ctx.shadowBlur = 0;
+        drawBottomText(ctx, props, values)
+
+        ctx.translate(-props.center_x, -props.center_y);
+    } catch { }
+
 }
 
+const drawHeader = (
+    ctx: CanvasRenderingContext2D,
+    props: IGaugeProps
+) => {
+    const fontSize = props.mainRadius / 2.2;
+
+    ctx.font = `${fontSize}px Roboto`
+    ctx.textAlign = "center"
+    ctx.fillText(props.name, 0, - props.boxRadius / 1.16);
+}
+
+const drawBottomText = (
+    ctx: CanvasRenderingContext2D,
+    props: IGaugeProps,
+    values: IGaugeValues
+) => {
+    const smallFontSize = props.mainRadius / 5;
+    const largeFontSize = props.mainRadius / 2.3;
+
+    ctx.font = `${smallFontSize}px Roboto`
+    ctx.textAlign = "left";
+    ctx.fillText("0", -props.mainRadius * 1.1, props.mainRadius * 1.3);
+    ctx.textAlign = "right";
+    ctx.fillText(values.max.toString(), props.mainRadius * 1.1, props.mainRadius * 1.3);
+
+    ctx.font = `${largeFontSize}px Roboto`
+    ctx.textAlign = "center";
+    ctx.fillText(values.value.toString(), 0, props.mainRadius * 1.95 );
+
+
+}
 
 const drawMainGaugePart = (
     ctx: CanvasRenderingContext2D,
@@ -82,8 +123,6 @@ const drawTopHand = (
 ) => {
 
     const rotation = calcTopArrowRotation(values)
-    console.log(rotation)
-
     ctx.rotate(rotation);
 
     ctx.beginPath();
@@ -151,30 +190,20 @@ const calcMainArrowRotation = (values: IGaugeValues) => {
 
 const calcTopArrowRotation = (values: IGaugeValues) => {
 
-    // minAng 315
-    // ybreak 345
-    // gbreak 375
-    // max    405
-
     if (values.valueTop! <= 0) return 315 * Math.PI / 180;
 
     if (values.valueTop! < values.minYellowTop!) {
         const angle = (values.valueTop! / values.minYellowTop! * 30) + 315;
-        console.log("red:", angle)
         return angle * Math.PI / 180;
     }
 
-    console.log(values.valueTop, values.minGreenTop, values.valueTop! < values.minGreenTop!)
-
     if (values.valueTop! < values.minGreenTop!) {
-        console.log("yellow");
         const angle =  ((values.valueTop! - values.minYellowTop!) / 
                         (values.minGreenTop! - values.minYellowTop!) * 30) + 345;
         return angle * Math.PI / 180;
     }
 
     if (values.valueTop! < values.maxTop!) {
-        console.log("green");
         const angle =  ((values.valueTop! - values.minGreenTop!) / 
                         (values.maxTop! - values.minGreenTop!) * 30) + 375;
         return angle * Math.PI / 180;

@@ -1,60 +1,84 @@
-import { Box } from "@mui/material";
+import { Box, SxProps } from "@mui/material";
 import { useEffect, useRef, useState } from "react";
 import { drawDoubleGauge } from "./lib/drawGauge";
 import { IGaugeProps, IGaugeValues } from "./lib/IGaugeProps";
 
 interface IProps {
     id: string;
-    height: number,
-    width: number,
+    name: string;
+    sx?: SxProps;
     values: IGaugeValues,
 }
 
-export const DoubleGaugeCanvas = ({id, height, width, values}: IProps) => {
+export const DoubleGaugeCanvas = ({id, values, sx, name}: IProps) => {
 
-    const elemRef = useRef<HTMLCanvasElement | null>(null)
+    const container = useRef<HTMLElement>(null)
+    const canvas = useRef<HTMLCanvasElement | null>(null)
     const [ctx, setCtx] = useState<CanvasRenderingContext2D | null>(null)
     const [props, setProps] = useState<IGaugeProps | null>(null);
 
+
+
+    if (ctx && props) {
+        drawDoubleGauge(ctx, props, values)
+    }
+
+
     useEffect(() => {
-        if (elemRef.current) {
 
-            const context = elemRef.current.getContext("2d")
+        const initCanvas = () => {
+            if (container.current && canvas.current) {
+                const context = canvas.current.getContext("2d")
+                setCtx(context);
+                return context;
+            }
+            return null;
+        }
 
-            const center_x = width / 2;
-            const center_y = height / 1.55;
+        const updateCanvasProps = (context: CanvasRenderingContext2D | null) => {
+            
+            if (!context && !container.current) return;
 
+            let height = container.current!.clientHeight;
+            let width = container.current!.clientWidth;
+            const center_x = container.current!.clientWidth / 2;
+            const center_y = container.current!.clientHeight / 1.8;
             const boxRadius = center_x < center_y ? center_x : center_y;
-            const mainRadius = boxRadius / 2;
-            const topRadius = boxRadius;
-            const handbaseRadius = mainRadius / 4;
+            const mainRadius = boxRadius / 2.6;
+            const topRadius = boxRadius / 1.35;
+            const handbaseRadius = mainRadius / 5;
 
-            const props: IGaugeProps = {
+            const gaugeProps: IGaugeProps = {
+                name,
                 height,
                 width,
                 center_x,
                 center_y,
-                mainRadius,
                 boxRadius,
-                handbaseRadius,
+                mainRadius,
                 topRadius,
+                handbaseRadius
             }
 
-            context?.save();
+            setProps(gaugeProps)
+            drawDoubleGauge(context!, gaugeProps, values)
 
-            drawDoubleGauge(context!, props, values)
 
-            setCtx(context);
-            setProps(props)
         }
-    }, [ctx, width, height])
+
+        const context = initCanvas();
+        updateCanvasProps(context)
+
+        if (container.current) window.addEventListener("resize", () => updateCanvasProps(ctx));
+
+    }, [ctx, name, values])
 
 
 
 
     return (
-        <Box className="gauge-canvas-container" sx={{border: "1px solid black"}}>
-            <canvas id={id} ref={elemRef} height={height} width={width}></canvas>
+        <Box className="gauge-canvas-container" ref={container}>
+            <canvas id={id} ref={canvas} height={props ? props.height : 200} width={props ? props.width : 200}></canvas>
         </Box>
     )
 }

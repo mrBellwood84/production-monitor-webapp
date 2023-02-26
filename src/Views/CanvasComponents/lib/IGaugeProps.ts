@@ -1,4 +1,5 @@
 export interface IGaugeProps {
+    name: string;
     height: number;
     width: number;
     center_x: number;

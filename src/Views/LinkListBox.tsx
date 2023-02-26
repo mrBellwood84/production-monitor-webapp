@@ -1,6 +1,5 @@
-import { Box, Divider, List, ListItem, ListItemButton, ListItemText, Typography } from "@mui/material"
+import { Box, List, ListItem, ListItemButton, ListItemText, Typography } from "@mui/material"
 import { Link } from "react-router-dom"
-import { displayPartsToString } from "typescript"
 import { ILinkItem } from "../models/ILinkItem"
 
 interface IProps {

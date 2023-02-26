@@ -1,11 +1,11 @@
-import { AppBar, Box, Container, Grid, Toolbar, Typography } from "@mui/material"
+import { AppBar, Box, Container, Toolbar, Typography } from "@mui/material"
 import { ILinkItem } from "../models/ILinkItem"
 import { LinkListBox } from "./LinkListBox"
 
 const gaugeLinks: ILinkItem[] = [
     {
-        name: "Måler 1 Demo",
-        uri: "gauge-1-demo",
+        name: "Dobbel Gauge Demo",
+        uri: "double-gauge-demo",
     }
 ]
 

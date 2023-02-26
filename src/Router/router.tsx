@@ -1,6 +1,6 @@
 import {createBrowserRouter} from "react-router-dom"
-import { App } from "../App"
 import { DashBoard } from "../Views/Dashboard"
+import { DoubleGaugeDemo } from "../Views/Demoes/DoubleGaugeDemo"
 
 export const router = createBrowserRouter([
     {
@@ -8,8 +8,8 @@ export const router = createBrowserRouter([
         element: <DashBoard />
     },
     {
-        path: "gauge-1-demo",
-        element: <App />
+        path: "/double-gauge-demo",
+        element: <DoubleGaugeDemo />
     }
 ])
 
