@@ -57,8 +57,8 @@ export const DoubleGaugeDemo = () => {
     const resetValues = () => {
         stopAutoIncrement();
         setValues(gaugeValues);
-        setIncrementValue(incrementValue)
-        setSpeed(speed);
+        setIncrementValue(10)
+        setSpeed(1000);
         reset();
     }
 
@@ -86,7 +86,6 @@ export const DoubleGaugeDemo = () => {
     }
 
     const stopAutoIncrement = () => {
-        console.log(autoId)
         clearInterval(autoId);
         setAutoId(undefined);
     }
