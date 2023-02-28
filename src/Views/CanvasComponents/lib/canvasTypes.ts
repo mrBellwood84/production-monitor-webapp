@@ -1,0 +1,1 @@
+export type CanvasDrawFunction = (context: CanvasRenderingContext2D, height: number, width: number) => void;

@@ -1,5 +1,5 @@
-import { height } from "@mui/system";
-import { IGaugeProps, IGaugeValues } from "./IGaugeProps"
+import { IGaugeProps } from "./IGaugeProps"
+import { IGaugeValues } from "./IGaugeValues"
 
 export const drawDoubleGauge = (
     ctx: CanvasRenderingContext2D,
@@ -7,7 +7,6 @@ export const drawDoubleGauge = (
     values: IGaugeValues
 ) => {
 
-    
     try {
         ctx.clearRect(0, 0, props.width, props.height)
         ctx.translate(props.center_x, props.center_y);
@@ -34,7 +33,6 @@ export const drawDoubleGauge = (
 
         ctx.translate(-props.center_x, -props.center_y);
     } catch { }
-
 }
 
 const drawHeader = (

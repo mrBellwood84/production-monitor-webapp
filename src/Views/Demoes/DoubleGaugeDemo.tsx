@@ -2,7 +2,7 @@ import { Box,  Button,  ButtonGroup,  Stack, TextField } from "@mui/material";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { DoubleGaugeCanvas } from "../CanvasComponents/DoubleGaugeCanvas";
-import { IGaugeValues } from "../CanvasComponents/lib/IGaugeProps";
+import { IGaugeValues } from "../CanvasComponents/lib/IGaugeValues";
 
 
 type FormValues = {
@@ -96,8 +96,10 @@ export const DoubleGaugeDemo = () => {
             gridTemplateRows: "50vh auto",
             gridTemplateColumns: "50vw auto",
             m: 5,
+            bgcolor: "#ddd",
+            p: 5
         }}>
-            <DoubleGaugeCanvas id="test" values={values} name="Maskin 1 Test" />
+            <DoubleGaugeCanvas values={values} name="Maskin 1 Test" />
             
             <Stack 
                 component="form"
