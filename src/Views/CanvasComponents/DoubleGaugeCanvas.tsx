@@ -20,7 +20,7 @@ export const DoubleGaugeCanvas = ({name, values, sx}: IProps) => {
         const boxRadius = center_x < center_y ? center_x : center_y;
         const mainRadius = boxRadius / 2.6;
         const topRadius = boxRadius / 1.35;
-        const handbaseRadius = mainRadius / 5;
+        const handbaseRadius = mainRadius / 7;
 
         const gaugeProps: IGaugeProps = {
             name,

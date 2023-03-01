@@ -1,12 +1,13 @@
 import { Box, List, ListItem, ListItemButton, ListItemText, Typography } from "@mui/material"
 import { Link } from "react-router-dom"
-import { ILinkItem } from "../models/ILinkItem"
+import { ILinkItem } from "../Models/ILinkItem"
 
 interface IProps {
+    title: string;
     list: ILinkItem[]
 }
 
-export const LinkListBox = ({list}: IProps) => {
+export const LinkListBox = ({list, title}: IProps) => {
     return (
         <Box sx={{
             width: "100%",
@@ -22,7 +23,7 @@ export const LinkListBox = ({list}: IProps) => {
             }}>
 
             <Typography variant="h6" component="div" sx={{color: "#333"}}>
-                Målere
+                {title}
             </Typography>
 
             <List sx={{width: "100%"}}>
