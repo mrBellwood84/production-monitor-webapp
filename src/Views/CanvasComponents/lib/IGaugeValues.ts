@@ -1,11 +1,13 @@
 export interface IGaugeValues {
-    minYellow: number;
-    minGreen: number;
-    max: number;
+    machineName: string;
+    
+    yellowTarget: number;
+    greenTarget: number;
+    maxTarget: number;
     value: number;
 
-    minYellowTop?: number;
-    minGreenTop?: number;
-    maxTop?: number;
+    yellowTargetTop?: number;
+    greenTargetTop?: number;
+    maxTargetTop?: number;
     valueTop?: number;
 }

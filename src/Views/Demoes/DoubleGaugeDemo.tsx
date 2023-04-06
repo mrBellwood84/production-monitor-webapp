@@ -6,14 +6,14 @@ import { IGaugeValues } from "../CanvasComponents/lib/IGaugeValues";
 
 
 type FormValues = {
-    minYellow: number,
-    minGreen: number,
-    max: number,
+    yellowTarget: number,
+    greenTarget: number,
+    maxTarget: number,
     value: number,
 
-    minYellowTop: number,
-    minGreenTop: number,
-    maxTop: number,
+    yellowTargetTop: number,
+    greenTargetTop: number,
+    maxTargetTop: number,
     valueTop: number,
     speed: number,
 
@@ -22,14 +22,15 @@ type FormValues = {
 
 export const DoubleGaugeDemo = () => {
     const gaugeValues: IGaugeValues = {
-        minYellow: 1600,
-        minGreen: 2400,
-        max: 3400,
+        machineName: "test",
+        yellowTarget: 1600,
+        greenTarget: 2400,
+        maxTarget: 3400,
         value: 0,
 
-        minYellowTop: 400,
-        minGreenTop: 600,
-        maxTop: 800,
+        yellowTargetTop: 400,
+        greenTargetTop: 600,
+        maxTargetTop: 800,
         valueTop: 0
     }
 
@@ -49,7 +50,7 @@ export const DoubleGaugeDemo = () => {
     const editValues = handleSubmit((data) => {
         
         stopAutoIncrement();
-        setValues({...data})
+        setValues({machineName: values.machineName, ...data})
         setIncrementValue(data.increment);
         setSpeed(data.speed);
     });
@@ -116,17 +117,17 @@ export const DoubleGaugeDemo = () => {
                             type="number"
                             variant="standard"
                             label="Minimum Gul"
-                            {...register("minYellow", {valueAsNumber: true})} />
+                            {...register("yellowTarget", {valueAsNumber: true})} />
                         <TextField
                             type="number"
                             variant="standard"
                             label="Minimum Grønn"
-                            {...register("minGreen", {valueAsNumber: true})} />
+                            {...register("greenTarget", {valueAsNumber: true})} />
                         <TextField
                             type="number"
                             variant="standard"
                             label="Maksimum Verdi"
-                            {...register("max", {valueAsNumber: true})} />
+                            {...register("maxTarget", {valueAsNumber: true})} />
                         <TextField
                             type="number"
                             variant="standard"
@@ -139,17 +140,17 @@ export const DoubleGaugeDemo = () => {
                             type="number"
                             variant="standard"
                             label="Minimum Gul Topp"
-                            {...register("minYellowTop", {valueAsNumber: true})} />
+                            {...register("yellowTargetTop", {valueAsNumber: true})} />
                         <TextField
                             type="number"
                             variant="standard"
                             label="Minimum Grønn Topp"
-                            {...register("minGreenTop", {valueAsNumber: true})} />
+                            {...register("greenTargetTop", {valueAsNumber: true})} />
                         <TextField
                             type="number"
                             variant="standard"
                             label="Maksimum Verdi Topp"
-                            {...register("maxTop", {valueAsNumber: true})} />
+                            {...register("maxTargetTop", {valueAsNumber: true})} />
                         <TextField
                             type="number"
                             variant="standard"

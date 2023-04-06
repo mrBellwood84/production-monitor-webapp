@@ -7,6 +7,8 @@ import { ThemeProvider } from '@emotion/react';
 import { theme } from './theme';
 import { RouterProvider } from 'react-router-dom';
 import { router } from './Router/router';
+import { Provider } from 'react-redux';
+import store from './Store/store';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -14,9 +16,11 @@ const root = ReactDOM.createRoot(
 root.render(
   <React.StrictMode>
     <ThemeProvider theme={theme}>
-        <CssBaseline />
-        <RouterProvider router={router} />
+        <Provider store={store}>
+            <CssBaseline />
+            <RouterProvider router={router} />
         {/* <App /> */}
+        </Provider>
     </ThemeProvider>
   </React.StrictMode>
 );

@@ -1,4 +1,3 @@
-import { grid } from "@mui/system";
 import { IGaugeProps } from "./IGaugeProps"
 import { IGaugeValues } from "./IGaugeValues"
 
@@ -54,7 +53,7 @@ const drawBottomText = (
     ctx.textAlign = "left";
     ctx.fillText("0", -props.mainRadius * 1.1, props.mainRadius * 1.3);
     ctx.textAlign = "right";
-    ctx.fillText(values.max.toString(), props.mainRadius * 1.1, props.mainRadius * 1.3);
+    ctx.fillText(values.maxTarget.toString(), props.mainRadius * 1.1, props.mainRadius * 1.3);
 
     ctx.font = `${largeFontSize}px Roboto`
     ctx.textAlign = "center";
@@ -128,7 +127,7 @@ const drawTopHand = (
 
     const y_innerBottom = -(props.topRadius! - (props.topRadius! / 11));
     const y_innerTop = -(props.topRadius! + (props.topRadius! / 11));
-    const y_outerTop = y_innerTop - (props.topRadius! / 25);
+    // const y_outerTop = y_innerTop - (props.topRadius! / 25);
     const y_outerBottom = y_innerBottom + (props.topRadius! / 25);
 
     ctx.moveTo(x_outerLeft, y_outerBottom);
@@ -183,22 +182,22 @@ const calcMainArrowRotation = (values: IGaugeValues) => {
     
     if (values.value <= 0) return 225 * Math.PI / 180;
 
-    if (values.value < values.minYellow) {
-        const angle = (values.value / values.minYellow * 90) + 225;
+    if (values.value < values.yellowTarget) {
+        const angle = (values.value / values.yellowTarget * 90) + 225;
         return angle * Math.PI / 180;
     }
 
-    if (values.value < values.minGreen) {
-        const angle = ((values.value - values.minYellow) / (values.minGreen - values.minYellow) * 90) + 315;
+    if (values.value < values.greenTarget) {
+        const angle = ((values.value - values.yellowTarget) / (values.greenTarget - values.yellowTarget) * 90) + 315;
         return angle * Math.PI / 180;
     }
 
-    if (values.value < values.max) {
-        const angle = ((values.value - values.minGreen) / (values.max - values.minGreen) * 90) + 405;
+    if (values.value < values.maxTarget) {
+        const angle = ((values.value - values.greenTarget) / (values.maxTarget - values.greenTarget) * 90) + 405;
         return angle * Math.PI / 180;
     }
 
-    if (values.value >= values.max) return 495 * Math.PI / 180;
+    if (values.value >= values.maxTarget) return 495 * Math.PI / 180;
 
     return 0
 }
@@ -207,24 +206,24 @@ const calcTopArrowRotation = (values: IGaugeValues) => {
 
     if (values.valueTop! <= 0) return 315 * Math.PI / 180;
 
-    if (values.valueTop! < values.minYellowTop!) {
-        const angle = (values.valueTop! / values.minYellowTop! * 30) + 315;
+    if (values.valueTop! < values.yellowTargetTop!) {
+        const angle = (values.valueTop! / values.yellowTargetTop! * 30) + 315;
         return angle * Math.PI / 180;
     }
 
-    if (values.valueTop! < values.minGreenTop!) {
-        const angle =  ((values.valueTop! - values.minYellowTop!) / 
-                        (values.minGreenTop! - values.minYellowTop!) * 30) + 345;
+    if (values.valueTop! < values.greenTargetTop!) {
+        const angle =  ((values.valueTop! - values.yellowTargetTop!) / 
+                        (values.greenTargetTop! - values.yellowTargetTop!) * 30) + 345;
         return angle * Math.PI / 180;
     }
 
-    if (values.valueTop! < values.maxTop!) {
-        const angle =  ((values.valueTop! - values.minGreenTop!) / 
-                        (values.maxTop! - values.minGreenTop!) * 30) + 375;
+    if (values.valueTop! < values.maxTargetTop!) {
+        const angle =  ((values.valueTop! - values.greenTargetTop!) / 
+                        (values.maxTargetTop! - values.greenTargetTop!) * 30) + 375;
         return angle * Math.PI / 180;
     }
 
-    if (values.valueTop! >= values.maxTop!) return 405 * Math.PI / 180;
+    if (values.valueTop! >= values.maxTargetTop!) return 405 * Math.PI / 180;
 
 
     return 2

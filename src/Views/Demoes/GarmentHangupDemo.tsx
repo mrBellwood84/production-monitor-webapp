@@ -1,42 +1,27 @@
-import { TabPanelUnstyled } from "@mui/base";
-import { Box, Typography } from "@mui/material";
-import { useState, useEffect } from "react";
-import { createMachineData } from "../../MockData/macines";
-import { IMachine } from "../../Models/Machine/IMachine";
+import { Box, Button, ButtonGroup, Stack, Typography } from "@mui/material";
+import { useAppDispatch, useAppSelector } from "../../Store/hooks";
 import { DoubleGaugeCanvas } from "../CanvasComponents/DoubleGaugeCanvas";
-import { IGaugeValues } from "../CanvasComponents/lib/IGaugeValues";
-
-const extractValues = (m: IMachine): IGaugeValues => {
-    let obj: IGaugeValues = {
-        minYellow: m.productionDayTarget.minYellow,
-        minGreen: m.productionDayTarget.minGreen,
-        max: m.productionDayTarget.max,
-        value: 0,
-
-        minYellowTop: m.productionSubDayTargets[0].minYellow,
-        minGreenTop: m.productionSubDayTargets[0].minGreen,
-        maxTop: m.productionSubDayTargets[0].max,
-        valueTop: 0,
-    }
-
-    return obj;
-}
+import { IGaugeValues } from "../CanvasComponents/lib/IGaugeValues"
+import { GarmentDataLoader } from "../PseudoComponents/GarmentDataLoader";
+import { IProduction } from "../../Models/Production/IProduction";
 
 export const GarmentHangupDemo = () => {
 
-    const [machineData, setMachineData] = useState<IMachine[]>();
+    const dispatch = useAppDispatch();
+    const data = useAppSelector(state => state.productionStore);
 
-    useEffect(() => {
-        const doSettMachineData = () => {
-            if (machineData) return;
-            const data = createMachineData();
-            setMachineData(data);
+    const createGaugeValues = (data: IProduction): IGaugeValues => {
+        return {
+            machineName: data.machine.displayName,
+            yellowTarget: data.yellowTarget,
+            greenTarget: data.greenTarget,
+            maxTarget: data.maxTarget,
+            value: data.currentValue,
         }
+    }
 
-        doSettMachineData();
-    },[machineData])
+    if (!data.dataLoaded) return <GarmentDataLoader />
 
-    if (!machineData) return <div>Loading</div>;
 
     return (
         <Box sx={{
@@ -44,15 +29,14 @@ export const GarmentHangupDemo = () => {
             width: "100vw",
             overflow: "hidden",
         }}>
-
             <Box sx={{
-                height: "10vh",
+                height: "15vh",
                 width: "100vw",
                 display: "flex",
                 justifyContent: "center",
                 alignItems: "center"
             }}>
-                <Typography variant="h4" component="div" sx={{
+                <Typography variant="h3" component="div" sx={{
                     fontWeight: 400,
                 }}>
                     Demo - Produksjonsoversikt Daglig
@@ -66,22 +50,24 @@ export const GarmentHangupDemo = () => {
                 maxHeight: "70vh",
                 widht: "inherit",
             }}>
-                {machineData && machineData.map(x => ( 
-                    <DoubleGaugeCanvas key={x.id} name={x.name} values={extractValues(x)} />
+                {data.data.map(x => (
+                    <DoubleGaugeCanvas
+                        key={x.id}
+                        name={x.machine.displayName}
+                        values={createGaugeValues(x)} />
                 ))}
             </Box>
 
             <Box sx={{
-                height: "20vh",
+                height: "15vh",
                 display: "flex",
                 justifyContent: "center",
                 alignItems: "center",
             }}>
-                <Typography variant="h2" component="div" sx={{
-                    fontWeight: 400,
-                }}>
-                    Produsert: 0 | Prosent: 0%
+                <Typography variant="h4" component="div">
+                    Produsert: {data.valueTotal}/{data.greenTargetTotal} | {data.percentValue}%
                 </Typography>
+
             </Box>
         </Box>
     )
