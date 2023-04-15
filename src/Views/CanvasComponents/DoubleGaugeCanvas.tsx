@@ -33,7 +33,6 @@ export const DoubleGaugeCanvas = ({name, values, sx}: IProps) => {
             topRadius,
             handbaseRadius
         }
-        // console.log(gaugeProps)
         drawDoubleGauge(ctx, gaugeProps, values)
     }
 

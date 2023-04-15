@@ -4,6 +4,7 @@ import { DashBoard } from "../Views/Dashboard"
 import { DoubleGaugeDemo } from "../Views/Demoes/DoubleGaugeDemo"
 import { GarmentHangupDemo } from "../Views/Demoes/GarmentHangupDemo"
 import { GarmentSignalRConnection } from "../Views/PseudoComponents/GarmentSignalRConnection"
+import { GarmentDataLoader } from "../Views/PseudoComponents/GarmentDataLoader"
 
 export const router = createBrowserRouter([
     {
@@ -18,6 +19,7 @@ export const router = createBrowserRouter([
         path: "/garment-hangup-demo",
         element: (
             <Fragment>
+                <GarmentDataLoader />
                 <GarmentSignalRConnection />
                 <GarmentHangupDemo />
             </Fragment>

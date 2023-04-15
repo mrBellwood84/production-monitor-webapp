@@ -1,9 +1,10 @@
-import { Box, Button, ButtonGroup, Stack, Typography } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 import { useAppDispatch, useAppSelector } from "../../Store/hooks";
 import { DoubleGaugeCanvas } from "../CanvasComponents/DoubleGaugeCanvas";
 import { IGaugeValues } from "../CanvasComponents/lib/IGaugeValues"
-import { GarmentDataLoader } from "../PseudoComponents/GarmentDataLoader";
 import { IProduction } from "../../Models/Production/IProduction";
+import { LoadingPage } from "../Loadingpage";
+import { ConnectionErrorPage } from "../ConnectionErrorPage";
 
 export const GarmentHangupDemo = () => {
 
@@ -20,8 +21,8 @@ export const GarmentHangupDemo = () => {
         }
     }
 
-    if (!data.dataLoaded) return <GarmentDataLoader />
-
+    if (data.loadError) return <ConnectionErrorPage />
+    if (!data.dataLoaded) return <LoadingPage />
 
     return (
         <Box sx={{

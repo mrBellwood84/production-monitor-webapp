@@ -5,6 +5,8 @@ import { IProductionUpdateDTO } from "../../Models/Production/IProductionUpdateD
 interface IProductionState {
     data: IProduction[];
     dataLoaded: boolean;
+    loadError: boolean;
+    socketConnected: boolean;
     valueTotal: number;
     greenTargetTotal: number;
     percentValue: number;
@@ -14,6 +16,8 @@ interface IProductionState {
 const initialState: IProductionState = {
     data: [],
     dataLoaded: false,
+    loadError: false,
+    socketConnected: false,
     valueTotal: 0,
     greenTargetTotal: 0,
     percentValue: 0,
@@ -30,10 +34,20 @@ export const productionSlice = createSlice({
 
             state.data = action.payload;
             state.dataLoaded = true;
+            state.loadError = false;
             state.valueTotal = total;
             state.greenTargetTotal = target;
             state.percentValue = percent;
         },
+
+        setLoadError: (state, action: PayloadAction<boolean>) => {
+            state.loadError = action.payload;
+        },
+
+        setSocketConnected: (state, action: PayloadAction<boolean>) => {
+            state.socketConnected = action.payload;
+        },
+
         incrementCounter: (state, action: PayloadAction<IProductionUpdateDTO>) => {
             
             if (!state.dataLoaded) return;
