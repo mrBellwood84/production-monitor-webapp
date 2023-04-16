@@ -1,11 +1,9 @@
+import { IGaugeDimension } from "./IGaugeDimension";
+import { IGaugeTextProps } from "./IGaugeTextProps";
+import { IGaugeValues } from "./IGaugeValues";
+
 export interface IGaugeProps {
-    name: string;
-    height: number;
-    width: number;
-    center_x: number;
-    center_y: number;
-    boxRadius: number;
-    mainRadius: number;
-    topRadius?: number;
-    handbaseRadius: number;
-}
+    textProps: IGaugeTextProps;
+    dimensions: IGaugeDimension;
+    values: IGaugeValues;
+}   

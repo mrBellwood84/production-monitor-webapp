@@ -1,29 +1,15 @@
-import { AppBar, Box, Button, Toolbar, Typography } from "@mui/material"
+import { AppBar, Box, Button, Container, Toolbar, Typography } from "@mui/material"
 import Stack from "@mui/material/Stack"
 import { useEffect, useRef, useState } from "react"
-import { ILinkItem } from "../Models/ILinkItem"
 import { LinkListBox } from "./LinkListBox"
 
 import { HubConnectionBuilder, HubConnectionState, HubConnection, HttpTransportType } from "@microsoft/signalr"
-
-const gaugeLinks: ILinkItem[] = [
-    {
-        name: "Dobbel Gauge Demo",
-        uri: "double-gauge-demo",
-    },
-
-]
-
-const screenLinks: ILinkItem[] = [
-    {
-        name: "Oppheng Produksjon Skjerm",
-        uri: "garment-hangup-demo"
-    },
-]
+import { gaugeRoutes, provideDemoRoutes, provideGaugeRoutes } from "../Router/routeProvider"
 
 export const DashBoard = () => {
 
     const connected = useRef<boolean>(false);
+    const [apiMessage, setApiMessage] = useState<string>("");
 
     // signalR test
     useEffect(() => {
@@ -44,14 +30,15 @@ export const DashBoard = () => {
 
     },[])
 
-    const sendMessage = async () => {
+    const testApiConnection = async () => {
         const result = await fetch("https://localhost:7031/api/alive");
         if (result.ok) {
-            console.log(result.status, await result.text());
+            const str = `${result.status} ${result.statusText} - ${await result.text()}`
+            setApiMessage(str);
         }
         else {
-            console.log(result.status, result.statusText)
-            console.log("no contact with api")
+            const str = `${result.status} ${result.statusText}\n - No Api Connection`
+            setApiMessage(str);
         }
     }   
 
@@ -66,11 +53,18 @@ export const DashBoard = () => {
             </AppBar>
 
             <Stack direction="row" spacing={2} sx={{mt: 2}} justifyContent="center">
-                <LinkListBox list={gaugeLinks} title="Målere" />
-                <LinkListBox list={screenLinks} title="Oversikt Produksjon"/>
+                <LinkListBox list={gaugeRoutes} title="Demo Målere" />
+                <LinkListBox list={[]} title="Demo Produksjon"/>
             </Stack>
 
-            <Button color="secondary" onClick={sendMessage}>Test</Button>
+            <Box sx={{display: "flex", justifyContent: "center", alignItems: "baseline", mt: 5}}>
+                <Stack spacing={2} direction="row" alignItems="center">
+                    <Button type="button" variant="contained" onClick={testApiConnection}>Test RestAPI connection</Button>
+                    <Typography variant="caption" fontSize={18} color="#333" fontWeight="bold">
+                        {apiMessage}
+                    </Typography>
+                </Stack>
+            </Box>
 
         </Box>
     )

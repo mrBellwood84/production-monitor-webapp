@@ -1,10 +1,10 @@
 import { Box, List, ListItem, ListItemButton, ListItemText, Typography } from "@mui/material"
 import { Link } from "react-router-dom"
-import { ILinkItem } from "../Models/ILinkItem"
+import { CustomRouteObject } from "../Router/routeProvider";
 
 interface IProps {
     title: string;
-    list: ILinkItem[]
+    list: CustomRouteObject[]
 }
 
 export const LinkListBox = ({list, title}: IProps) => {
@@ -16,7 +16,7 @@ export const LinkListBox = ({list, title}: IProps) => {
             borderRadius: 1,
             display: "flex",
             flexDirection: "column",
-            justifyContent: "center",
+            justifyContent: "top",
             alignItems: "center",
             
             
@@ -28,9 +28,9 @@ export const LinkListBox = ({list, title}: IProps) => {
 
             <List sx={{width: "100%"}}>
                 {list.map(item => (
-                    <ListItem  key={item.uri} disablePadding>
-                        <ListItemButton LinkComponent={Link} href={item.uri}>
-                            <ListItemText primary={item.name} />
+                    <ListItem  key={item.path} disablePadding>
+                        <ListItemButton LinkComponent={Link} href={item.path}>
+                            <ListItemText primary={item.label} />
                         </ListItemButton>
                     </ListItem>
                 ))}
