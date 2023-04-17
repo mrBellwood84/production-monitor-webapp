@@ -1,5 +1,6 @@
 import { IGaugeDimension } from "./IGaugeDimension";
 import { IGaugeProps } from "./IGaugeProps";
+import { IGaugeTextProps } from "./IGaugeTextProps";
 import { IGaugeValues } from "./IGaugeValues";
 
 export const drawSingleGauge = (
@@ -7,7 +8,7 @@ export const drawSingleGauge = (
     props: IGaugeProps,
 ) => {
 
-    const { dimensions, textProps } = props;
+    const { dimensions, textProps, values } = props;
 
     ctx.shadowColor = "#aaa"
     ctx.shadowOffsetX = 1;
@@ -23,12 +24,54 @@ export const drawSingleGauge = (
     drawGaugePart(ctx, 0.75, 1.25, dimensions, "red");
     drawGaugePart(ctx, 1.25, 1.75, dimensions, "yellow");
     drawGaugePart(ctx, 1.75, 2.25, dimensions, "green");
-    drawText(ctx, props)
+    drawText(ctx, dimensions, textProps, values);
+    if (textProps.includeHeader) drawHeaderText(ctx, textProps.name, -dimensions.outer_radius, dimensions.outer_radius / 5)
 
-    drawMainHand(ctx, props)
+    drawMainHand(ctx, values, dimensions)
 
     ctx.translate(-center_x, -center_y);
 }
+
+export const drawDoubleGaugeV1 = (
+    ctx: CanvasRenderingContext2D, 
+    props: IGaugeProps
+) => {
+
+    const { dimensions, subDimensions, values, subValues, textProps } = props;
+
+    ctx.clearRect(0,0, dimensions.width * 2, (dimensions.height + subDimensions!.height) * 2);
+
+    ctx.shadowColor = "#aaa"
+    ctx.shadowOffsetX = 1;
+    ctx.shadowOffsetY = 0.75;
+    ctx.shadowBlur = 2;
+
+    ctx.translate(subDimensions!.center_x, subDimensions!.center_y)
+    drawGaugePart(ctx, 0.75, 1.25, subDimensions!, "red");
+    drawGaugePart(ctx, 1.25, 1.75, subDimensions!, "yellow");
+    drawGaugePart(ctx, 1.75, 2.25, subDimensions!, "green");
+    drawMainHand(ctx, subValues!, subDimensions!)
+    drawText(ctx, subDimensions!, textProps, subValues!);    
+    ctx.translate(-subDimensions!.center_x, -subDimensions!.center_y)
+
+    ctx.translate(dimensions.center_x, dimensions.center_y)
+    drawGaugePart(ctx, 0.75, 1.25, dimensions, "red");
+    drawGaugePart(ctx, 1.25, 1.75, dimensions, "yellow");
+    drawGaugePart(ctx, 1.75, 2.25, dimensions, "green");
+    drawMainHand(ctx, values, dimensions!)
+    drawText(ctx, dimensions, textProps, values);    
+    ctx.translate(-dimensions.center_x, -dimensions.center_y)
+
+    const header_y = -subDimensions!.outer_radius * 1.25;
+
+    if (textProps.includeHeader) {
+        ctx.translate(dimensions.center_x, subDimensions!.center_y)
+        drawHeaderText(ctx, textProps.name, header_y, dimensions.outer_radius / 5)
+        ctx.translate(-dimensions.center_x, -subDimensions!.center_y)
+    }
+}
+
+
 
 const drawGaugePart = (
     ctx: CanvasRenderingContext2D,
@@ -76,10 +119,9 @@ const createLinearGradient = (
 
 const drawMainHand = (
     ctx: CanvasRenderingContext2D,
-    props: IGaugeProps,
+    values: IGaugeValues,
+    dimensions: IGaugeDimension,
 ) => {
-
-    const { values, dimensions } = props;
 
     const rotation = calcHandRotation(values)
 
@@ -95,25 +137,39 @@ const drawMainHand = (
     ctx.rotate(-rotation);
 }
 
-const drawText = (ctx: CanvasRenderingContext2D, props: IGaugeProps) => {
+const drawHeaderText = (
+    ctx: CanvasRenderingContext2D,
+    name: string,
+    y: number,
+    fontSize: number,
+) => {
+    ctx.textAlign = "center"
+    ctx.textBaseline = "middle"
+    ctx.fillStyle = "#333";
 
-    const { values, dimensions, textProps} = props;
+    ctx.font = `bold ${fontSize}px Roboto`;
+    ctx.fillText(name, 0, y * 1.25)
+}
+
+const drawText = (
+    ctx: CanvasRenderingContext2D, 
+    dimensions: IGaugeDimension,
+    textProps: IGaugeTextProps,
+    values: IGaugeValues,
+) => {
+
+    const { includeTargets, includeValue} = textProps;
+    if (!includeTargets && !includeValue) return;
+
     const {value, yellowTarget, greenTarget, maxTarget} = values;
     const { inner_radius, outer_radius } = dimensions;
-    const { name, includeHeader, includeTargets, includeValue} = textProps;
 
     const valueTextSize = outer_radius / 3.5;
-    const headerTextSize = outer_radius / 5;
     const targetTextSize = outer_radius / 8;
 
     ctx.textAlign = "center"
     ctx.textBaseline = "middle"
     ctx.fillStyle = "#333";
-
-    if (includeHeader) {
-        ctx.font = `bold ${headerTextSize}px Roboto`;
-        ctx.fillText(name, 0, -outer_radius * 1.25)
-    }
 
     if (includeTargets) {
         ctx.font = `bold ${targetTextSize}px Roboto`;
@@ -145,7 +201,7 @@ const calcHandRotation = (values: IGaugeValues) => {
     }
 
     if (value < maxTarget) {
-        const angle = ((value - greenTarget) / (maxTarget - yellowTarget) * 90) + 405;
+        const angle = ((value - greenTarget) / (maxTarget - greenTarget) * 90) + 405;
         return angle * Math.PI / 180;
     }
 

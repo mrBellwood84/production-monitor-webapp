@@ -5,5 +5,7 @@ import { IGaugeValues } from "./IGaugeValues";
 export interface IGaugeProps {
     textProps: IGaugeTextProps;
     dimensions: IGaugeDimension;
+    subDimensions?: IGaugeDimension;
     values: IGaugeValues;
+    subValues?: IGaugeValues;
 }   

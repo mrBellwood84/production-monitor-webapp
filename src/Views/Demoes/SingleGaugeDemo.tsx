@@ -28,8 +28,8 @@ const initTextProps: IGaugeTextProps = {
     includeTargets: true,
     includeValue: true
 }
-const initSpeed = 1000;
-const initIncrementValue = 1;
+const initSpeed = 200;
+const initIncrementValue = 25;
 
 const initFormValues: FormValues = {
     ...initGaugeValues,
@@ -50,6 +50,7 @@ export const SingleGaugeDemo = () => {
     const [incrementSpeed, setIncrementSpeed] = useState<number>(initSpeed);
     const [textProps, setTextProps] = useState<IGaugeTextProps>(initTextProps);
     const [gaugeValues, setGaugeValues] = useState<IGaugeValues>(initGaugeValues)
+    const [showBorder, setShowBorder] = useState<boolean>(false);
 
     const editValues = handleSubmit((data) => {
         stopAutoIncrement()
@@ -131,7 +132,8 @@ export const SingleGaugeDemo = () => {
             bgcolor: "#ddd",
             borderRadius: 10
         }}>
-            <SingleGauge textProps={textProps} values={gaugeValues} sx={{height: "100%", width: "100%", gridRow: 2, gridColumn: 1}} />
+            <SingleGauge textProps={textProps} values={gaugeValues} 
+            sx={{height: "100%", width: "100%", gridRow: 2, gridColumn: 1, border: (showBorder ? "2px solid black" : "none")}} />
 
             <Stack spacing={2} sx={{gridRow: 2, gridColumn: 3, minWidth: "30vw"}}>
                 <Box 
@@ -232,6 +234,14 @@ export const SingleGaugeDemo = () => {
                                 checked={textProps.includeValue} 
                                 color="primary" 
                                 size="medium" onChange={setShowValue}/> }/>
+                        <FormControlLabel
+                            label="Vis boks"
+                            labelPlacement="top"
+                            control={<Switch 
+                                checked={showBorder}
+                                color="primary"
+                                size="medium"
+                                onChange={() => setShowBorder(!showBorder)} /> }/>
                     </FormGroup>
                 </FormControl>
             </Stack>
@@ -245,6 +255,4 @@ export const SingleGaugeDemo = () => {
 
         </Box>
     )
-
-    // return <SingleGauge textProps={textProps} values={values} sx={{height: "80vh", width: "80vw"}}  />
 }

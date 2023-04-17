@@ -1,4 +1,4 @@
-import { Box, SxProps, Typography } from "@mui/material"
+import { Box, SxProps } from "@mui/material"
 import { CanvasBase } from "./CanvasBase"
 import { CanvasDrawFunction } from "./lib/canvasTypes";
 import { IGaugeProps } from "./lib/IGaugeProps";
@@ -22,7 +22,7 @@ export const SingleGauge = ({ textProps, values, sx }: IProps) => {
         const center_y = height / 2;
         const outer_radius = (center_x < center_y ? center_x : center_y) / (textProps.includeHeader ? 1.2 : 1);
         const inner_radius = outer_radius / 2;
-        const handRadius = outer_radius / 8;
+        const handRadius = outer_radius / 10;
 
         const dimensions: IGaugeDimension = {
             height,
@@ -43,9 +43,5 @@ export const SingleGauge = ({ textProps, values, sx }: IProps) => {
     }
 
 
-    return (
-        <Box sx={sx} >
-            <CanvasBase draw={draw} sx={sx} />
-        </Box>
-    )
+    return <CanvasBase draw={draw} sx={sx} />
 }
