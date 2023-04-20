@@ -31,10 +31,10 @@ const initSubGaugeValues: IGaugeValues = {
 }
 
 const initTextProps: IGaugeTextProps = {
-    name: "Double Gauge V1 Demo, Sub Targets",
+    name: "Double Gauge V2 Demo, Sub Targets",
     includeHeader: true,
     includeTargets: true,
-    includeValue: true
+    includeValue: false
 }
 const initSpeed = 200;
 const initIncrementValue = 25;
