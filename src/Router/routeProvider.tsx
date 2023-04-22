@@ -5,6 +5,7 @@ import { DoubleGaugeV1_SpeedDemo } from "../Views/Demoes/DoubleGaugeV1_SpeedDemo
 import { DoubleGaugeV2_SubtargetDemo } from "../Views/Demoes/DoubleGaugeV2_SubtargetDemo";
 import { DoubleGaugeV2_SpeedDemo } from "../Views/Demoes/DoubleGaugeV2_SpeedDemo";
 import { DashBoard } from "../Views/Dashboard";
+import { ProductionDemo } from "../Views/Demoes/ProductionDemo";
 
 export interface CustomRouteObject {
     path: string;
@@ -40,25 +41,47 @@ export const gaugeRoutes: CustomRouteObject[] = [
     }
 ]
 
+export const demoRoutes: CustomRouteObject[] = [
+    {
+        path: "singlegauge-productiondemo",
+        element: <ProductionDemo type="single"/>,
+        label: "Single Gauge"
+    },    {
+        path: "doublegaugev1-productiondemo",
+        element: <ProductionDemo type="v1"/>,
+        label: "Double V1 Gauge"
+    },    {
+        path: "doublegaugev2-productiondemo",
+        element: <ProductionDemo type="v2"/>,
+        label: "Double V2 Gauge"
+    }
+]
 
-export const provideGaugeRoutes = () => {
+
+export const provideGaugeRoutes = (): RouteObject[] => {
     const routes = gaugeRoutes.map(x =>  { return { path: `/${x.path}`, element: x.element }});
     return routes;
 }
 
-export const provideDemoRoutes = () => {
-    return []
+export const provideDemoRoutes = (): RouteObject[] => {
+    const routes = demoRoutes.map(x => { return { path: `/${x.path}`, element: x.element}});
+    return routes;
 }
 
-export const provideAllRoutes = () => {
+export const provideAllRoutes = (): RouteObject[] => {
+
+    const gaugeRoutes = provideGaugeRoutes();
+    const demoRoutes = provideDemoRoutes();
 
     const routes: RouteObject[] = [
         {
             path: "/",
             element: <DashBoard />
         }
-    ].concat(provideGaugeRoutes(),provideDemoRoutes())
+    ];
+
+    gaugeRoutes.map(x => routes.push(x));
+    demoRoutes.map(x => routes.push(x));
 
     return routes;
-
 }

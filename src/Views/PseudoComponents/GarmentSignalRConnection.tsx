@@ -1,5 +1,5 @@
 import { HttpTransportType, HubConnectionBuilder } from "@microsoft/signalr"
-import { Fragment, useEffect, useRef } from "react"
+import { useEffect, useRef } from "react"
 import { useAppDispatch } from "../../Store/hooks";
 import { IProductionUpdateDTO } from "../../Models/Production/IProductionUpdateDTO";
 import { productionSlice } from "../../Store/Slices/productionSlice";
@@ -35,5 +35,5 @@ export const GarmentSignalRConnection = () => {
         establishConnection();
     })
 
-    return <Fragment />
+    return null
 }
