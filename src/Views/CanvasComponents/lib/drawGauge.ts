@@ -40,7 +40,7 @@ export const drawDoubleGaugeV1 = (
 
     const { dimensions, subDimensions, values, subValues, textProps } = props;
 
-    ctx.clearRect(0,0, dimensions.width * 2, (dimensions.height + subDimensions!.height) * 2);
+    ctx.clearRect(0,0, dimensions.width * 4, (dimensions.height + subDimensions!.height) * 4);
 
     ctx.shadowColor = "#aaa"
     ctx.shadowOffsetX = 1;
@@ -61,9 +61,10 @@ export const drawDoubleGaugeV1 = (
     drawGaugePart(ctx, 0.75, 1.25, dimensions, "red");
     drawGaugePart(ctx, 1.25, 1.75, dimensions, "yellow");
     drawGaugePart(ctx, 1.75, 2.25, dimensions, "green");
-    drawHand270(ctx, values, dimensions!)
     drawValueText(ctx, dimensions, textProps, values);    
     drawTargetText(ctx, dimensions, textProps, values);
+    drawHand270(ctx, values, dimensions!)
+
     ctx.translate(-dimensions.center_x, -dimensions.center_y)
 
 
@@ -82,7 +83,7 @@ export const drawDoubleGaugeV2 = (
 
     const { dimensions, subDimensions, values, subValues, textProps } = props;
 
-    ctx.clearRect(0,0, dimensions.width * 2, (dimensions.height + subDimensions!.height) * 2);
+    ctx.clearRect(0,0, dimensions.width * 4, (dimensions.height + subDimensions!.height) * 4);
 
     ctx.shadowColor = "#aaa"
     ctx.shadowOffsetX = 1;
@@ -103,9 +104,10 @@ export const drawDoubleGaugeV2 = (
     drawGaugePart(ctx, 0.75, 1.25, dimensions, "red");
     drawGaugePart(ctx, 1.25, 1.75, dimensions, "yellow");
     drawGaugePart(ctx, 1.75, 2.25, dimensions, "green");
-    drawHand270(ctx, values, dimensions!)
     drawValueText(ctx, dimensions, textProps, values);    
     drawTargetText(ctx, dimensions, textProps, values);
+    drawHand270(ctx, values, dimensions!)
+
     ctx.translate(-dimensions.center_x, -dimensions.center_y)
 
     const header_y = -subDimensions!.outer_radius * 0.95;
