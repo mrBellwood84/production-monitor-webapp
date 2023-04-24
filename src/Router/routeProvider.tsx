@@ -1,11 +1,8 @@
 import { RouteObject } from "react-router-dom";
 import { SingleGaugeDemo } from "../Views/Demoes/SingleGaugeDemo";
-import { DoubleGaugeV1_SubtargetDemo } from "../Views/Demoes/DoubleGaugeV1_SubtargetDemo";
-import { DoubleGaugeV1_SpeedDemo } from "../Views/Demoes/DoubleGaugeV1_SpeedDemo";
-import { DoubleGaugeV2_SubtargetDemo } from "../Views/Demoes/DoubleGaugeV2_SubtargetDemo";
-import { DoubleGaugeV2_SpeedDemo } from "../Views/Demoes/DoubleGaugeV2_SpeedDemo";
 import { DashBoard } from "../Views/Dashboard";
 import { ProductionDemo } from "../Views/Demoes/ProductionDemo";
+import { DoubleGauge_Demo } from "../Views/Demoes/DoubleGauge_Demo";
 
 export interface CustomRouteObject {
     path: string;
@@ -17,28 +14,19 @@ export const gaugeRoutes: CustomRouteObject[] = [
     {
         path: "singleGaugeDemo",
         element: <SingleGaugeDemo />,
-        label: "Single Gauge Demo",
+        label: "Enkel Måler",
     },
     {
-        path: "doublegaugev1/subtargetdemo",
-        element: <DoubleGaugeV1_SubtargetDemo />,
-        label: "Double Gauge v.1, Delmål Demo"
+        path: "doublegaugev1",
+        element: <DoubleGauge_Demo gaugeType="V1" title="Måler, Type 1" />,
+        label: "Dobbel måler, Type 1"
     },
     {
-        path: "doublegaugev1/speeddemo",
-        element: <DoubleGaugeV1_SpeedDemo />,
-        label: "Double Gauge v.1, Hastighet Demo"
+        path: "doublegaugev2",
+        element: <DoubleGauge_Demo gaugeType="V2" title="Måler Type 2" />,
+        label: "Dobbel måler, Type 2"
     },
-    {
-        path: "doublegaugev2/subtargetdemo",
-        element: <DoubleGaugeV2_SubtargetDemo />,
-        label: "Double Gaugle v.2, Delmål Demo "
-    },
-    {
-        path: "doublegaugev2/speeddemo",
-        element: <DoubleGaugeV2_SpeedDemo />,
-        label: "Double Gauge v.2, Delmål Demo"
-    }
+
 ]
 
 export const demoRoutes: CustomRouteObject[] = [

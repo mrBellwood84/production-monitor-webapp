@@ -4,6 +4,14 @@ import { IGaugeValues } from "../CanvasComponents/lib/IGaugeValues"
 import { Box, ButtonGroup, Button, Stack, Switch, FormControl, FormGroup, FormControlLabel, TextField, InputAdornment, Typography } from "@mui/material"
 import { useForm } from "react-hook-form"
 import { DoubleGaugeV1 } from "../CanvasComponents/DoubleGaugeV1"
+import { DoubleGaugeV2 } from "../CanvasComponents/DoubleGaugeV2"
+
+type GaugeTypes = "V1" | "V2"
+
+interface IProps {
+    gaugeType: GaugeTypes,
+    title: string;
+}
 
 type FormValues = {
     yellowTarget: number;
@@ -31,7 +39,7 @@ const initSubGaugeValues: IGaugeValues = {
 }
 
 const initTextProps: IGaugeTextProps = {
-    name: "Double Gauge V1 Demo, Sub Targets",
+    name: "",
     includeHeader: true,
     includeTargets: true,
     includeValue: true
@@ -59,11 +67,16 @@ const createSubTargets = (mainValues: IGaugeValues): IGaugeValues => {
     }
 }
 
-export const DoubleGaugeV1_SubtargetDemo= () => {
+
+
+export const DoubleGauge_Demo= ({gaugeType, title }: IProps) => {
+
+    initTextProps.name = title;
+    initFormValues.name = title;
 
     const { register, handleSubmit, reset, setValue} = useForm<FormValues>({
         defaultValues: initFormValues
-    });
+    })
 
     const [autoId, setAutoId] = useState<NodeJS.Timer | undefined>();
     const [incrementValue, setIncrementValue] = useState<number>(initIncrementValue);
@@ -215,8 +228,15 @@ export const DoubleGaugeV1_SubtargetDemo= () => {
             bgcolor: "#ddd",
             borderRadius: 10
         }}>
-            <DoubleGaugeV1 textProps={textProps} mainValues={mainGaugeValues} subValues={subGaugeValues} 
-            sx={{height: "100%", width: "100%", gridRow: 2, gridColumn: 1, border: (showBorder ? "2px solid black" : "none")}} />
+            {gaugeType === "V1" && (
+                <DoubleGaugeV1 textProps={textProps} mainValues={mainGaugeValues} subValues={subGaugeValues} 
+                sx={{height: "100%", width: "100%", gridRow: 2, gridColumn: 1, border: (showBorder ? "2px solid black" : "none")}} />
+            )}
+
+            {gaugeType === "V2" && (
+                <DoubleGaugeV2 textProps={textProps} mainValues={mainGaugeValues} subValues={subGaugeValues} 
+                sx={{height: "100%", width: "100%", gridRow: 2, gridColumn: 1, border: (showBorder ? "2px solid black" : "none")}} />        
+            )}
 
             <Stack spacing={2} sx={{gridRow: 2, gridColumn: 3, minWidth: "30vw"}}>
                 <Box 
