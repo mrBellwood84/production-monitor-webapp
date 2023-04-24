@@ -1,9 +1,19 @@
 import { useState } from "react"
-import { SingleGauge } from "../CanvasComponents/SingleGauge"
 import { IGaugeTextProps } from "../CanvasComponents/lib/IGaugeTextProps"
 import { IGaugeValues } from "../CanvasComponents/lib/IGaugeValues"
-import { Box, ButtonGroup, Button, Stack, Switch, FormControl, FormGroup, FormControlLabel, TextField, InputAdornment } from "@mui/material"
+import { Box, ButtonGroup, Button, Stack, Switch, FormControl, FormGroup, FormControlLabel, TextField, InputAdornment, Typography } from "@mui/material"
 import { useForm } from "react-hook-form"
+import { DoubleGaugeV1 } from "../CanvasComponents/DoubleGaugeV1"
+import { DoubleGaugeV2 } from "../CanvasComponents/DoubleGaugeV2"
+import { SingleGauge } from "../CanvasComponents/SingleGauge"
+import { AltGauge_1 } from "../CanvasComponents/AltGauge_1"
+
+type GaugeTypes = "single" | "v1" | "v2" | "alt1" | "alt2" | "alt3";
+
+interface IProps {
+    gaugeType: GaugeTypes,
+    title: string;
+}
 
 type FormValues = {
     yellowTarget: number;
@@ -16,14 +26,22 @@ type FormValues = {
     incrementSpeed: number;
 }
 
-const initGaugeValues: IGaugeValues = {
+const initMainGaugeValues: IGaugeValues = {
     yellowTarget: 500,
     greenTarget: 1500,
     maxTarget: 3000,
     value: 0,
 }
+
+const initSubGaugeValues: IGaugeValues = {
+    yellowTarget: initMainGaugeValues.yellowTarget / 4,
+    greenTarget: initMainGaugeValues.greenTarget / 4,
+    maxTarget: initMainGaugeValues.maxTarget / 4,
+    value: 0,
+}
+
 const initTextProps: IGaugeTextProps = {
-    name: "Single Gauge Demo",
+    name: "",
     includeHeader: true,
     includeTargets: true,
     includeValue: true
@@ -32,66 +50,146 @@ const initSpeed = 200;
 const initIncrementValue = 25;
 
 const initFormValues: FormValues = {
-    ...initGaugeValues,
+    yellowTarget: initMainGaugeValues.yellowTarget,
+    greenTarget: initMainGaugeValues.greenTarget,
+    maxTarget: initMainGaugeValues.maxTarget,
+    value: initMainGaugeValues.value,
+
     name: initTextProps.name,
     incrementSpeed: initSpeed,
     incrementValue: initIncrementValue,
 }
 
-export const SingleGaugeDemo = () => {
+const createSubTargets = (mainValues: IGaugeValues): IGaugeValues => {
+    return {
+        yellowTarget: mainValues.yellowTarget / 4,
+        greenTarget: mainValues.greenTarget / 4,
+        maxTarget: mainValues.maxTarget / 4,
+        value: 0,
+    }
+}
+
+
+
+export const GaugeDemo = ({gaugeType, title }: IProps) => {
+
+    initTextProps.name = title;
+    initFormValues.name = title;
 
     const { register, handleSubmit, reset, setValue} = useForm<FormValues>({
         defaultValues: initFormValues
-    });
-
+    })
 
     const [autoId, setAutoId] = useState<NodeJS.Timer | undefined>();
     const [incrementValue, setIncrementValue] = useState<number>(initIncrementValue);
     const [incrementSpeed, setIncrementSpeed] = useState<number>(initSpeed);
     const [textProps, setTextProps] = useState<IGaugeTextProps>(initTextProps);
-    const [gaugeValues, setGaugeValues] = useState<IGaugeValues>(initGaugeValues)
-    const [showBorder, setShowBorder] = useState<boolean>(false);
+    const [mainGaugeValues, setMainGaugeValues] = useState<IGaugeValues>(initMainGaugeValues);
+    const [subGaugeValues, setSubGaugeValues] = useState<IGaugeValues>(initSubGaugeValues);
+    const [showBorder, setShowBorder] = useState<boolean>(false)
+    const [subtargetProgress, setSubtargetProgress] = useState<number>(1)
+    const [subtargetProgressText, setSubtargetProgressText] = useState<string>("Working on sub target 1");
 
     const editValues = handleSubmit((data) => {
+
+        const mainGaugeValues: IGaugeValues = {
+            yellowTarget: data.yellowTarget,
+            greenTarget: data.greenTarget,
+            maxTarget: data.maxTarget,
+            value: data.value,
+        }
+
         stopAutoIncrement()
-        setGaugeValues({...data});
+
+        setMainGaugeValues(mainGaugeValues);
+        setSubGaugeValues(createSubTargets(mainGaugeValues));
+
         setIncrementValue(data.incrementValue);
         setIncrementSpeed(data.incrementSpeed);
         setTextProps({...textProps, name: data.name})
     });
 
     const resetValues = () => {
+
         stopAutoIncrement();
-        setGaugeValues(initGaugeValues);
-        setIncrementValue(initIncrementValue)
-        setIncrementSpeed(initSpeed)
+
+        setMainGaugeValues(initMainGaugeValues);
+        setSubGaugeValues(initSubGaugeValues);
+
+        setIncrementValue(initIncrementValue);
+        setIncrementSpeed(initSpeed);
         setTextProps({...textProps, name: initTextProps.name});
+
+        setSubtargetProgress(1);
+        setSubtargetProgressText("Working on sub target 1");
         reset();
     }
     
     const increment = (v: 1 | -1 = 1) => {
 
-        if (gaugeValues.value <= 0 && v === -1) return;
+        if (mainGaugeValues.value <= 0 && v === -1) return;
 
-        const value = gaugeValues.value + (incrementValue * v);
+        const value = mainGaugeValues.value + (incrementValue * v);
+        let subValue = subGaugeValues.value + (incrementValue * v);
+        if (subValue < 0) subValue = 0;
+
         setValue("value", value)
-        setGaugeValues({
-            ...gaugeValues,
+
+        setMainGaugeValues({
+            ...mainGaugeValues,
             value,
         });
-    }
+
+        if ((subValue > (subGaugeValues.yellowTarget + (subGaugeValues.maxTarget / 2))) && subtargetProgress < 5) {
+            setSubGaugeValues({
+                ...subGaugeValues,
+                value: 0,
+            });
+            setSubtargetProgress(subtargetProgress + 1);
+            const targetText = subtargetProgress < 5 ? `Working on sub target ${subtargetProgress + 1}` : "All subtargets complete";
+            setSubtargetProgressText(targetText)
+            return
+        };
+
+        setSubGaugeValues({
+            ...subGaugeValues,
+            value: subValue,
+        });
+    };
 
 
     const startAutoIncrement = () => {
-        let value = gaugeValues.value;
+
+        let mainValue = mainGaugeValues.value;
+        let subValue = subGaugeValues.value;
+        let progress = subtargetProgress;
+
         const interval = setInterval(() => {
             // DEV :: increment function seems not wanting work in interval
-            value += incrementValue;
-            setGaugeValues({
-                ...gaugeValues,
-                value,
+            mainValue += incrementValue;
+            subValue += incrementValue;
+    
+            setValue("value", mainValue)
+    
+            setMainGaugeValues({
+                ...mainGaugeValues,
+                value: mainValue,
             });
-            setValue("value", value);
+    
+            if ((subValue > (subGaugeValues.yellowTarget + (subGaugeValues.maxTarget / 2))) && progress < 5) {
+
+                subValue = 0;
+
+                setSubtargetProgress(++progress);
+                const targetText = progress < 5 ? `Working on sub target ${progress}` : "All subtargets complete";
+                setSubtargetProgressText(targetText);
+            };
+    
+            setSubGaugeValues({
+                ...subGaugeValues,
+                value: subValue,
+            });
+
         }, incrementSpeed);
         setAutoId(interval);
     }
@@ -132,8 +230,25 @@ export const SingleGaugeDemo = () => {
             bgcolor: "#ddd",
             borderRadius: 10
         }}>
-            <SingleGauge textProps={textProps} values={gaugeValues} 
-            sx={{height: "100%", width: "100%", gridRow: 2, gridColumn: 1, border: (showBorder ? "2px solid black" : "none")}} />
+            {gaugeType === "single" && (
+                <SingleGauge textProps={textProps} values={mainGaugeValues}
+                sx={{height: "100%", width: "100%", gridRow: 2, gridColumn: 1, border: (showBorder ? "2px solid black" : "none")}} />
+            )}
+
+            {gaugeType === "v1" && (
+                <DoubleGaugeV1 textProps={textProps} mainValues={mainGaugeValues} subValues={subGaugeValues} 
+                sx={{height: "100%", width: "100%", gridRow: 2, gridColumn: 1, border: (showBorder ? "2px solid black" : "none")}} />
+            )}
+
+            {gaugeType === "v2" && (
+                <DoubleGaugeV2 textProps={textProps} mainValues={mainGaugeValues} subValues={subGaugeValues} 
+                sx={{height: "100%", width: "100%", gridRow: 2, gridColumn: 1, border: (showBorder ? "2px solid black" : "none")}} />        
+            )}
+
+            {gaugeType === "alt1" && (
+                <AltGauge_1 textProps={textProps} values={mainGaugeValues}
+                sx={{height: "100%", width: "100%", gridRow: 2, gridColumn: 1, border: (showBorder ? "2px solid black" : "none")}} />
+            )}
 
             <Stack spacing={2} sx={{gridRow: 2, gridColumn: 3, minWidth: "30vw"}}>
                 <Box 
@@ -234,17 +349,30 @@ export const SingleGaugeDemo = () => {
                                 checked={textProps.includeValue} 
                                 color="primary" 
                                 size="medium" onChange={setShowValue}/> }/>
-                        <FormControlLabel
+                        <FormControlLabel 
                             label="Vis boks"
                             labelPlacement="top"
                             control={<Switch 
                                 checked={showBorder}
                                 color="primary"
                                 size="medium"
-                                onChange={() => setShowBorder(!showBorder)} /> }/>
+                                onChange={() => setShowBorder(!showBorder)} /> }/> 
                     </FormGroup>
                 </FormControl>
             </Stack>
+
+            {(gaugeType === "v1" || gaugeType === "v2") && (
+                <Box sx={{
+                    gridRow: 3, gridColumn: 3,
+                    display: "flex",
+                    justifyContent: "center", alignItems: "center"
+                }}>
+                    <Typography variant="h5" component="div">
+                        {subtargetProgressText}
+                    </Typography>
+                </Box>                
+            )}
+
 
             <ButtonGroup variant="text" color="primary" sx={{gridColumn: "1/5", gridRow: 4, mt: 3}}>
                 <Button fullWidth color="primary" onClick={() => increment()} disabled={Boolean(autoId)} >Increment</Button>
@@ -254,5 +382,4 @@ export const SingleGaugeDemo = () => {
             </ButtonGroup>
 
         </Box>
-    )
-}
+    )}

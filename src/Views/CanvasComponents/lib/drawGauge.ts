@@ -120,7 +120,6 @@ export const drawDoubleGaugeV2 = (
 }
 
 
-
 const drawGaugePart = (
     ctx: CanvasRenderingContext2D,
     startAngle: number, 
@@ -272,7 +271,7 @@ const drawTargetText = (
             ctx.font = `bold ${targetTextSize / 1.8}px Roboto`;
 
             const radius = outer_radius / 1.17;
-            const angle = 336.68;
+            const angle = 210 * Math.PI / 180;
             const x_red = (radius * Math.sin(angle))
             const y_red = (radius * Math.cos(angle))
             ctx.fillText(yellowTarget.toString(), x_red, y_red)

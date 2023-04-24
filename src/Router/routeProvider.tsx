@@ -1,8 +1,7 @@
 import { RouteObject } from "react-router-dom";
-import { SingleGaugeDemo } from "../Views/Demoes/SingleGaugeDemo";
 import { DashBoard } from "../Views/Dashboard";
 import { ProductionDemo } from "../Views/Demoes/ProductionDemo";
-import { DoubleGauge_Demo } from "../Views/Demoes/DoubleGauge_Demo";
+import { GaugeDemo } from "../Views/Demoes/GaugeDemo";
 
 export interface CustomRouteObject {
     path: string;
@@ -13,19 +12,24 @@ export interface CustomRouteObject {
 export const gaugeRoutes: CustomRouteObject[] = [
     {
         path: "singleGaugeDemo",
-        element: <SingleGaugeDemo />,
+        element: <GaugeDemo gaugeType="single" title="Enkel Måler" />,
         label: "Enkel Måler",
     },
     {
         path: "doublegaugev1",
-        element: <DoubleGauge_Demo gaugeType="V1" title="Måler, Type 1" />,
-        label: "Dobbel måler, Type 1"
+        element: <GaugeDemo gaugeType="v1" title="Dobbel Måler, Type 1" />,
+        label: "Dobbel Måler, Type 1"
     },
     {
         path: "doublegaugev2",
-        element: <DoubleGauge_Demo gaugeType="V2" title="Måler Type 2" />,
-        label: "Dobbel måler, Type 2"
+        element: <GaugeDemo gaugeType="v2" title="Dobbel Måler Type 2" />,
+        label: "Dobbel Måler, Type 2"
     },
+    {
+        path: "altgauge-1",
+        element: <GaugeDemo gaugeType="alt1" title="Alternativ Måler 1" />,
+        label: "Alternativ måler 1",
+    }
 
 ]
 
@@ -33,15 +37,15 @@ export const demoRoutes: CustomRouteObject[] = [
     {
         path: "singlegauge-productiondemo",
         element: <ProductionDemo type="single"/>,
-        label: "Single Gauge"
+        label: "Enkel måler, Type 1"
     },    {
         path: "doublegaugev1-productiondemo",
         element: <ProductionDemo type="v1"/>,
-        label: "Double V1 Gauge"
+        label: "Dobbel Måler, Type 1",
     },    {
         path: "doublegaugev2-productiondemo",
         element: <ProductionDemo type="v2"/>,
-        label: "Double V2 Gauge"
+        label: "Dobbel Måler, Type 2",
     }
 ]
 

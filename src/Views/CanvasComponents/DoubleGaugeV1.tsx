@@ -12,7 +12,6 @@ interface IProps {
     mainValues: IGaugeValues;
     subValues: IGaugeValues;
     sx?: SxProps
-    
 }
 
 export const DoubleGaugeV1 = ({textProps, mainValues, subValues, sx}: IProps) => {
