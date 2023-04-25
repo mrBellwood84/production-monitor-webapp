@@ -18,10 +18,11 @@ export const AltGauge_1 = ({textProps, values, sx}: IProps) => {
     const draw: CanvasDrawFunction = (ctx, height, width) => {
 
         const center_x = width / 2;
-        const center_y = textProps.includeHeader ? (height / 2) + (height / 8) : (height / 2) + (height / 12);
-        const outer_radius = (center_x < center_y ? center_x : center_y) / (textProps.includeHeader ? 1.55 : 1.25);
+        const center_y = textProps.includeHeader ? (height * 0.85 / 2) + (height * 0.15) : height / 2;
+        const baseRadius = (center_x < center_y ? center_x : center_y)
+        const outer_radius = textProps.includeHeader ? baseRadius * 0.76 : baseRadius
         const inner_radius = outer_radius / 2;
-        const handRadius = outer_radius / 10;
+        const handRadius = outer_radius / 20;
 
         const dimensions: IGaugeDimension = {
             height,

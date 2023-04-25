@@ -1,10 +1,6 @@
-import { DisplaySettingsSharp } from "@mui/icons-material";
 import { IGaugeDimension } from "./IGaugeDimension";
 import { IGaugeProps } from "./IGaugeProps";
-import { text } from "stream/consumers";
 import { IGaugeValues } from "./IGaugeValues";
-import { IGaugeTextProps } from "./IGaugeTextProps";
-import { yellow } from "@mui/material/colors";
 
 export const drawAltGauge_1 = (
     ctx: CanvasRenderingContext2D,
@@ -19,14 +15,77 @@ export const drawAltGauge_1 = (
 
     drawOuterGauge_spiked(ctx, dimensions);
     drawInnerGaugeGradient(ctx, dimensions, values);
-    drawHand(ctx, dimensions, values);
 
-    ctx.translate(0, -dimensions.center_y)
-
+    if (textProps.includeTargets) drawHand(ctx, dimensions, values);
     if (textProps.includeHeader) drawHeaderText(ctx, textProps.name, dimensions);
-    if (textProps.includeValue) drawValueText(ctx, dimensions, textProps, values);
+    if (textProps.includeValue) drawValueText(ctx, dimensions, values);
 
-    ctx.translate(-dimensions.center_x, 0)
+    ctx.translate(-dimensions.center_x, -dimensions.center_y)
+
+}
+
+export const drawAltGauge_2 = (
+    ctx: CanvasRenderingContext2D,
+    props: IGaugeProps
+) => {
+    const {dimensions, subDimensions, textProps, values} = props
+
+    ctx.clearRect(0,0, dimensions.width * 2, dimensions.height * 2);
+    ctx.translate(dimensions.center_x, dimensions.center_y);
+
+    ctx.beginPath()
+    ctx.arc(0, 0, dimensions.outer_radius, 0, 1 * Math.PI, true);
+    ctx.stroke();
+    ctx.closePath()
+
+    ctx.beginPath()
+    ctx.arc(0, 0, dimensions.inner_radius, 0, 1 * Math.PI, true);
+    ctx.stroke();
+    ctx.closePath()
+
+    drawHeaderText(ctx, textProps.name, dimensions)
+    ctx.translate(-dimensions.center_x, -dimensions.center_y);
+
+
+    ctx.translate(subDimensions!.center_x, subDimensions!.center_y);
+
+    ctx.beginPath()
+    ctx.arc(0, 0,subDimensions!.outer_radius , 0.25 * Math.PI, 0.75 * Math.PI);
+    ctx.stroke();
+    ctx.closePath()
+
+    ctx.beginPath()
+    ctx.arc(0, 0, subDimensions!.inner_radius, 0.25 * Math.PI, 0.75 * Math.PI);
+    ctx.stroke();
+    ctx.closePath()
+
+    ctx.translate(-subDimensions!.center_x, -subDimensions!.center_y);
+
+}
+
+export const drawAltGauge_3 = (
+    ctx: CanvasRenderingContext2D,
+    props: IGaugeProps
+) => {
+    const {dimensions, textProps, values} = props
+
+    ctx.clearRect(0,0, dimensions.width * 2, dimensions.height * 2);
+    ctx.translate(dimensions.center_x, dimensions.center_y);
+
+    ctx.beginPath()
+    ctx.arc(0, 0, dimensions.outer_radius, 0, 1 * Math.PI, true);
+    ctx.stroke();
+    ctx.closePath()
+
+    ctx.beginPath()
+    ctx.arc(0, 0, dimensions.inner_radius, 0, 1 * Math.PI, true);
+    ctx.stroke();
+    ctx.closePath()
+
+    ctx.strokeRect(-dimensions.outer_radius, dimensions.inner_radius * 0.5, dimensions.outer_radius * 2, dimensions.inner_radius * 0.75)
+
+    drawHeaderText(ctx, textProps.name, dimensions)
+    ctx.translate(-dimensions.center_x, -dimensions.center_y);
 
 }
 
@@ -36,6 +95,7 @@ const drawOuterGauge_spiked = (
     dimensions: IGaugeDimension
 ) => {
 
+    const { outer_radius } = dimensions;
 
     const startAngle = 135;
     const endAngle = 405;
@@ -46,8 +106,10 @@ const drawOuterGauge_spiked = (
     const startRadian = startAngle * Math.PI / 180;
     const endRadian = endAngle * Math.PI / 180;
 
+    const radius = outer_radius * 0.82
+
     ctx.beginPath();
-    ctx.arc(0,0, dimensions.outer_radius, startRadian, endRadian);
+    ctx.arc(0,0, radius, startRadian, endRadian);
     ctx.stroke();
 
     let itter = 0;
@@ -57,8 +119,8 @@ const drawOuterGauge_spiked = (
 
         ctx.rotate(rad);
         ctx.beginPath()
-        ctx.moveTo(0, dimensions.outer_radius);
-        itter % 10 == 0  ? ctx.lineTo(0, dimensions.outer_radius * 1.05) : ctx.lineTo(0, dimensions.outer_radius * 1.025);
+        ctx.moveTo(0, radius);
+        itter % 10 === 0  ? ctx.lineTo(0, radius * 1.05) : ctx.lineTo(0, radius * 1.025);
         ctx.stroke();
         ctx.rotate(-rad);
         itter++;
@@ -68,12 +130,12 @@ const drawOuterGauge_spiked = (
     let percent = 0;
     ctx.textAlign = "center"
     ctx.textBaseline = "middle"
-    ctx.font = `bold ${dimensions.outer_radius / 12.5}px Roboto`
+    ctx.font = `bold ${radius / 12.5}px Roboto`
 
     for (let i = 0; i < 271; i += 27) {
         
         const angle = (i + 135) * Math.PI / 180;
-        const distance = dimensions.outer_radius * 1.175;
+        const distance = radius * 1.175;
 
         const x = distance * Math.cos(angle);
         const y = distance * Math.sin(angle);
@@ -94,8 +156,8 @@ const drawInnerGaugeGradient = (
     const {inner_radius, outer_radius} = dimensions
     const {value, maxTarget} = values
 
-    const outer = outer_radius * 0.95;
-    const inner = inner_radius * 1.45;
+    const outer = outer_radius * 0.8;
+    const inner = inner_radius * 1.2;
     
     const startAngle = 135 * Math.PI / 180;
 
@@ -136,9 +198,9 @@ const drawHand = (
     const angle = value < maxTarget ? ((value / maxTarget) * 270) : 270;
     const rotation = (angle - 135) * Math.PI / 180;
 
-    const inner = dimensions.inner_radius / 12 ;
-    const outer = dimensions.inner_radius / 8;
-    const distance = dimensions.outer_radius / 1.5;
+    const inner = dimensions.handRadius / 2;
+    const outer = dimensions.handRadius;
+    const distance = dimensions.inner_radius * 0.8;
     ctx.fillStyle = "#333";
     ctx.strokeStyle = "#333"
 
@@ -151,7 +213,7 @@ const drawHand = (
 
     ctx.beginPath()
     ctx.arc(0, 0, inner, 0, 2 * Math.PI)
-    ctx.stroke()
+    ctx.fill()
     ctx.closePath()
 
     ctx.beginPath()
@@ -171,22 +233,21 @@ const drawHeaderText = (
     dimensions: IGaugeDimension
 ) => {
 
-
+    const fontSize = dimensions.outer_radius / 5;
     ctx.textAlign = "center"
     ctx.textBaseline = "middle"
     ctx.fillStyle = "#333";
-
-    const fontSize = dimensions.outer_radius / 5;
-    const y = dimensions.height / 20;
-
     ctx.font = `bold ${fontSize}px Roboto`;
-    ctx.fillText(name, 0, y * 1.25)
+
+
+    const y = -(dimensions.outer_radius * 1.15);
+
+    ctx.fillText(name, 0, y)
 }
 
 const drawValueText = (
     ctx: CanvasRenderingContext2D,
     dimensions: IGaugeDimension,
-    textProps: IGaugeTextProps,
     values: IGaugeValues,
 ) => {
     const valueTextSize = dimensions.outer_radius / 3.5;
@@ -195,5 +256,9 @@ const drawValueText = (
     ctx.textBaseline = "middle";
     ctx.fillStyle = "#333"
     ctx.font = `bold ${valueTextSize}px Roboto`
-    ctx.fillText(values.value.toString(), 0, dimensions.height * 0.95 );
+
+    const y = dimensions.outer_radius * 0.75;
+
+
+    ctx.fillText(values.value.toString(), 0, y );
 }
