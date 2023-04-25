@@ -28,7 +28,17 @@ export const gaugeRoutes: CustomRouteObject[] = [
     {
         path: "altgauge-1",
         element: <GaugeDemo gaugeType="alt1" title="Alternativ Måler 1" />,
-        label: "Alternativ måler 1",
+        label: "Alternativ Måler 1",
+    },
+    {
+        path: "altgauge-2",
+        element: <GaugeDemo gaugeType="alt2" title="Alternativ Måler 2" />,
+        label: "Alternativ Måler 2",
+    },
+    {
+        path: "altgauge-3",
+        element: <GaugeDemo gaugeType="alt3" title="Alternativ Måler 3" />,
+        label: "Alternativ Måler 3",
     }
 
 ]

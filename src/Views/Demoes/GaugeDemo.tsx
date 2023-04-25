@@ -7,6 +7,8 @@ import { DoubleGaugeV1 } from "../CanvasComponents/DoubleGaugeV1"
 import { DoubleGaugeV2 } from "../CanvasComponents/DoubleGaugeV2"
 import { SingleGauge } from "../CanvasComponents/SingleGauge"
 import { AltGauge_1 } from "../CanvasComponents/AltGauge_1"
+import { AltGauge_3 } from "../CanvasComponents/AltGauge_3"
+import { AltGauge_2 } from "../CanvasComponents/AltGauge_2"
 
 type GaugeTypes = "single" | "v1" | "v2" | "alt1" | "alt2" | "alt3";
 
@@ -46,8 +48,8 @@ const initTextProps: IGaugeTextProps = {
     includeTargets: true,
     includeValue: true
 }
-const initSpeed = 200;
-const initIncrementValue = 25;
+const initSpeed = 25;
+const initIncrementValue = 1;
 
 const initFormValues: FormValues = {
     yellowTarget: initMainGaugeValues.yellowTarget,
@@ -250,6 +252,16 @@ export const GaugeDemo = ({gaugeType, title }: IProps) => {
                 sx={{height: "100%", width: "100%", gridRow: 2, gridColumn: 1, border: (showBorder ? "2px solid black" : "none")}} />
             )}
 
+            {gaugeType === "alt2" && (
+                <AltGauge_2 textProps={textProps} mainValues={mainGaugeValues} subValues={subGaugeValues}
+                sx={{height: "100%", width: "100%", gridRow: 2, gridColumn: 1, border: (showBorder ? "2px solid black" : "none")}} />
+            )}
+            
+            {gaugeType === "alt3" && (
+                <AltGauge_3 textProps={textProps} mainValues={mainGaugeValues} subValues={subGaugeValues}
+                sx={{height: "100%", width: "100%", gridRow: 2, gridColumn: 1, border: (showBorder ? "2px solid black" : "none")}} />
+            )}
+
             <Stack spacing={2} sx={{gridRow: 2, gridColumn: 3, minWidth: "30vw"}}>
                 <Box 
                     component="form"
@@ -361,7 +373,7 @@ export const GaugeDemo = ({gaugeType, title }: IProps) => {
                 </FormControl>
             </Stack>
 
-            {(gaugeType === "v1" || gaugeType === "v2") && (
+            {(gaugeType !== "single" && gaugeType !== "alt1") && (
                 <Box sx={{
                     gridRow: 3, gridColumn: 3,
                     display: "flex",
