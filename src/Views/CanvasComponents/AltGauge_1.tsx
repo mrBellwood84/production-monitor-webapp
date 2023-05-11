@@ -9,11 +9,12 @@ import { CanvasBase } from "./CanvasBase";
 
 interface IProps {
     textProps: IGaugeTextProps;
-    values: IGaugeValues;
-    sx?: SxProps
+    mainValues: IGaugeValues;
+    subValues: IGaugeValues;
+    sx?: SxProps;
 }
 
-export const AltGauge_1 = ({textProps, values, sx}: IProps) => {
+export const AltGauge_1 = ({textProps, mainValues, subValues, sx}: IProps) => {
 
     const draw: CanvasDrawFunction = (ctx, height, width) => {
 
@@ -36,7 +37,8 @@ export const AltGauge_1 = ({textProps, values, sx}: IProps) => {
         const props: IGaugeProps = {
             textProps,
             dimensions,
-            values,
+            values: mainValues,
+            subValues: subValues,
         }
 
         drawAltGauge_1(ctx, props);

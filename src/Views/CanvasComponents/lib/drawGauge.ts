@@ -119,7 +119,6 @@ export const drawDoubleGaugeV2 = (
     }
 }
 
-
 const drawGaugePart = (
     ctx: CanvasRenderingContext2D,
     startAngle: number, 
@@ -131,11 +130,11 @@ const drawGaugePart = (
     ctx.beginPath();
     ctx.arc(0,0, dimensions.outer_radius, startAngle * Math.PI, endAngle * Math.PI);
     ctx.arc(0,0, dimensions.inner_radius, endAngle * Math.PI, startAngle * Math.PI, true);
-    ctx.fillStyle = createLinearGradient(ctx, startAngle, color, gradientMod)
+    ctx.fillStyle = createConicGradient(ctx, startAngle, color, gradientMod)
     ctx.fill()
 }
 
-const createLinearGradient = (
+const createConicGradient = (
     ctx: CanvasRenderingContext2D,
     startAngle: number,
     color: "red" | "yellow" | "green",

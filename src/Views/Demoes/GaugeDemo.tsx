@@ -248,7 +248,7 @@ export const GaugeDemo = ({gaugeType, title }: IProps) => {
             )}
 
             {gaugeType === "alt1" && (
-                <AltGauge_1 textProps={textProps} values={mainGaugeValues}
+                <AltGauge_1 textProps={textProps} mainValues={mainGaugeValues} subValues={subGaugeValues}
                 sx={{height: "100%", width: "100%", gridRow: 2, gridColumn: 1, border: (showBorder ? "2px solid black" : "none")}} />
             )}
 
