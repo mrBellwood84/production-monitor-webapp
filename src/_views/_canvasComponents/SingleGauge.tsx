@@ -1,11 +1,11 @@
-import { Box, SxProps } from "@mui/material"
+import { SxProps } from "@mui/material"
 import { CanvasBase } from "./CanvasBase"
-import { CanvasDrawFunction } from "./lib/canvasTypes";
-import { IGaugeProps } from "./lib/IGaugeProps";
-import { drawSingleGauge } from "./lib/drawGauge";
-import { IGaugeDimension } from "./lib/IGaugeDimension";
-import { IGaugeValues } from "./lib/IGaugeValues";
-import { IGaugeTextProps } from "./lib/IGaugeTextProps";
+import { CanvasDrawFunction } from "./_lib/canvasTypes";
+import { IGaugeProps } from "./_lib/IGaugeProps";
+import { drawSingleGauge } from "./_lib/drawGauge";
+import { IGaugeDimension } from "./_lib/IGaugeDimension";
+import { IGaugeValues } from "./_lib/IGaugeValues";
+import { IGaugeTextProps } from "./_lib/IGaugeTextProps";
 
 interface IProps {
     textProps: IGaugeTextProps,

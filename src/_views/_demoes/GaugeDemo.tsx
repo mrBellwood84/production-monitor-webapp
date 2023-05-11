@@ -1,14 +1,14 @@
 import { useState } from "react"
-import { IGaugeTextProps } from "../canvasComponents/lib/IGaugeTextProps"
-import { IGaugeValues } from "../canvasComponents/lib/IGaugeValues"
 import { Box, ButtonGroup, Button, Stack, Switch, FormControl, FormGroup, FormControlLabel, TextField, InputAdornment, Typography } from "@mui/material"
 import { useForm } from "react-hook-form"
-import { DoubleGaugeV1 } from "../canvasComponents/DoubleGaugeV1"
-import { DoubleGaugeV2 } from "../canvasComponents/DoubleGaugeV2"
-import { SingleGauge } from "../canvasComponents/SingleGauge"
-import { AltGauge_1 } from "../canvasComponents/AltGauge_1"
-import { AltGauge_3 } from "../canvasComponents/AltGauge_3"
-import { AltGauge_2 } from "../canvasComponents/AltGauge_2"
+import { IGaugeValues } from "../_canvasComponents/_lib/IGaugeValues";
+import { IGaugeTextProps } from "../_canvasComponents/_lib/IGaugeTextProps";
+import { SingleGauge } from "../_canvasComponents/SingleGauge";
+import { DoubleGaugeV1 } from "../_canvasComponents/DoubleGaugeV1";
+import { DoubleGaugeV2 } from "../_canvasComponents/DoubleGaugeV2";
+import { AltGauge1 } from "../_canvasComponents/AltGauge1";
+import { AltGauge2 } from "../_canvasComponents/AltGauge2";
+import { AltGauge3 } from "../_canvasComponents/AltGauge3";
 
 type GaugeTypes = "single" | "v1" | "v2" | "alt1" | "alt2" | "alt3";
 
@@ -248,17 +248,17 @@ export const GaugeDemo = ({gaugeType, title }: IProps) => {
             )}
 
             {gaugeType === "alt1" && (
-                <AltGauge_1 textProps={textProps} mainValues={mainGaugeValues} subValues={subGaugeValues}
+                <AltGauge1 textProps={textProps} mainValues={mainGaugeValues} subValues={subGaugeValues}
                 sx={{height: "100%", width: "100%", gridRow: 2, gridColumn: 1, border: (showBorder ? "2px solid black" : "none")}} />
             )}
 
             {gaugeType === "alt2" && (
-                <AltGauge_2 textProps={textProps} mainValues={mainGaugeValues} subValues={subGaugeValues}
+                <AltGauge2 textProps={textProps} mainValues={mainGaugeValues} subValues={subGaugeValues}
                 sx={{height: "100%", width: "100%", gridRow: 2, gridColumn: 1, border: (showBorder ? "2px solid black" : "none")}} />
             )}
             
             {gaugeType === "alt3" && (
-                <AltGauge_3 textProps={textProps} mainValues={mainGaugeValues} subValues={subGaugeValues}
+                <AltGauge3 textProps={textProps} mainValues={mainGaugeValues} subValues={subGaugeValues}
                 sx={{height: "100%", width: "100%", gridRow: 2, gridColumn: 1, border: (showBorder ? "2px solid black" : "none")}} />
             )}
 

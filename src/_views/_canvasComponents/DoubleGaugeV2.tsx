@@ -1,11 +1,11 @@
 import { SxProps } from "@mui/material";
-import { IGaugeTextProps } from "./lib/IGaugeTextProps";
-import { IGaugeValues } from "./lib/IGaugeValues";
+import { IGaugeTextProps } from "./_lib/IGaugeTextProps";
+import { IGaugeValues } from "./_lib/IGaugeValues";
 import { CanvasBase } from "./CanvasBase";
-import { CanvasDrawFunction } from "./lib/canvasTypes";
-import { drawDoubleGaugeV2 } from "./lib/drawGauge";
-import { IGaugeDimension } from "./lib/IGaugeDimension";
-import { IGaugeProps } from "./lib/IGaugeProps";
+import { CanvasDrawFunction } from "./_lib/canvasTypes";
+import { drawDoubleGaugeV2 } from "./_lib/drawGauge";
+import { IGaugeDimension } from "./_lib/IGaugeDimension";
+import { IGaugeProps } from "./_lib/IGaugeProps";
 
 
 interface IProps {

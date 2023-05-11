@@ -31,7 +31,7 @@ export const drawAltGauge_2 = (
     ctx: CanvasRenderingContext2D,
     props: IGaugeProps
 ) => {
-    const {dimensions, subDimensions, textProps, values} = props
+    const {dimensions, subDimensions, textProps } = props
 
     ctx.clearRect(0,0, dimensions.width * 2, dimensions.height * 2);
     ctx.translate(dimensions.center_x, dimensions.center_y);
@@ -70,7 +70,7 @@ export const drawAltGauge_3 = (
     ctx: CanvasRenderingContext2D,
     props: IGaugeProps
 ) => {
-    const {dimensions, textProps, values} = props
+    const {dimensions, textProps } = props
 
     ctx.clearRect(0,0, dimensions.width * 2, dimensions.height * 2);
     ctx.translate(dimensions.center_x, dimensions.center_y);
@@ -120,7 +120,6 @@ const drawOuterGauge_spiked = (
     const breakpoint = radius * 0.5
 
     for (let i = 0; i < 271; i += 1.8) {
-        let j = Math.round(i)
         const rad = (405 + i) * Math.PI / 180;
 
         ctx.rotate(rad);
@@ -169,14 +168,12 @@ const drawOuterGaugeGradient = (
     values: IGaugeValues,
 ) => {
 
-    const {inner_radius, outer_radius} = dimensions
-    // const {value, maxTarget} = values
+    const { outer_radius } = dimensions
 
     const outer = outer_radius * 0.9;
     const inner = outer_radius * 0.7;
     
     const startAngle = 135 * Math.PI / 180;
-    const endAngle = (135 + 270) * Math.PI / 180;
 
     const angleGradient = calcOuterGaugeGradient(values);
 

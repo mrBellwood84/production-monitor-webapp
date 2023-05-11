@@ -1,6 +1,6 @@
 import { Box, SxProps } from "@mui/material";
 import { useEffect, useRef, useState } from "react"
-import { CanvasDrawFunction } from "./lib/canvasTypes";
+import { CanvasDrawFunction } from "./_lib/canvasTypes";
 
 interface IProps {
     sx?: SxProps;
@@ -35,7 +35,6 @@ export const CanvasBase = ({ draw, sx }: IProps) => {
             canvasRef.current.width = canvasRef.current.offsetWidth;
         }
 
-
         setCanvasSize();
 
         if (canvasRef.current && ctx ) {
@@ -51,11 +50,7 @@ export const CanvasBase = ({ draw, sx }: IProps) => {
                 }
             }, 25)
         })
-
-    },[ctx, draw, rerender])
-
-
-
+    })
 
     return (
         <Box ref={divRef} sx={sx}>

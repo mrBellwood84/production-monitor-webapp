@@ -6,9 +6,9 @@ import { CssBaseline } from '@mui/material';
 import { ThemeProvider } from '@emotion/react';
 import { theme } from './theme';
 import { RouterProvider } from 'react-router-dom';
-import { router } from './router/router';
+import { router } from './_router/router';
 import { Provider } from 'react-redux';
-import store from './store/store';
+import store from './_store/store';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement

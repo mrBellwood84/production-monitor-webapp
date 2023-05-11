@@ -1,4 +1,4 @@
-import { IMachine } from "../machine/IMachine";
+import { IMachine } from "../_machine/IMachine";
 
 export interface IProduction {
     id: string;

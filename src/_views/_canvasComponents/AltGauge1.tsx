@@ -1,10 +1,10 @@
-import { SxProps, hexToRgb } from "@mui/material";
-import { IGaugeTextProps } from "./lib/IGaugeTextProps";
-import { IGaugeValues } from "./lib/IGaugeValues";
-import { CanvasDrawFunction } from "./lib/canvasTypes";
-import { IGaugeDimension } from "./lib/IGaugeDimension";
-import { IGaugeProps } from "./lib/IGaugeProps";
-import { drawAltGauge_1 } from "./lib/drawAltGauge";
+import { SxProps } from "@mui/material";
+import { IGaugeTextProps } from "./_lib/IGaugeTextProps";
+import { IGaugeValues } from "./_lib/IGaugeValues";
+import { CanvasDrawFunction } from "./_lib/canvasTypes";
+import { IGaugeDimension } from "./_lib/IGaugeDimension";
+import { IGaugeProps } from "./_lib/IGaugeProps";
+import { drawAltGauge_1 } from "./_lib/drawAltGauge";
 import { CanvasBase } from "./CanvasBase";
 
 interface IProps {
@@ -14,7 +14,7 @@ interface IProps {
     sx?: SxProps;
 }
 
-export const AltGauge_1 = ({textProps, mainValues, subValues, sx}: IProps) => {
+export const AltGauge1 = ({textProps, mainValues, subValues, sx}: IProps) => {
 
     const draw: CanvasDrawFunction = (ctx, height, width) => {
 

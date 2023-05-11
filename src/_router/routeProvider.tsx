@@ -1,7 +1,7 @@
 import { RouteObject } from "react-router-dom";
-import { DashBoard } from "../views/Dashboard";
-import { ProductionDemo } from "../views/demoes/ProductionDemo";
-import { GaugeDemo } from "../views/demoes/GaugeDemo";
+import { ProductionDemo } from "../_views/_demoes/ProductionDemo";
+import { GaugeDemo } from "../_views/_demoes/GaugeDemo";
+import { DashBoard } from "../_views/Dashboard";
 
 export interface CustomRouteObject {
     path: string;
