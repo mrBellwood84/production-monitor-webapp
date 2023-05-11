@@ -1,14 +1,14 @@
 import { useState } from "react"
-import { IGaugeTextProps } from "../CanvasComponents/lib/IGaugeTextProps"
-import { IGaugeValues } from "../CanvasComponents/lib/IGaugeValues"
+import { IGaugeTextProps } from "../canvasComponents/lib/IGaugeTextProps"
+import { IGaugeValues } from "../canvasComponents/lib/IGaugeValues"
 import { Box, ButtonGroup, Button, Stack, Switch, FormControl, FormGroup, FormControlLabel, TextField, InputAdornment, Typography } from "@mui/material"
 import { useForm } from "react-hook-form"
-import { DoubleGaugeV1 } from "../CanvasComponents/DoubleGaugeV1"
-import { DoubleGaugeV2 } from "../CanvasComponents/DoubleGaugeV2"
-import { SingleGauge } from "../CanvasComponents/SingleGauge"
-import { AltGauge_1 } from "../CanvasComponents/AltGauge_1"
-import { AltGauge_3 } from "../CanvasComponents/AltGauge_3"
-import { AltGauge_2 } from "../CanvasComponents/AltGauge_2"
+import { DoubleGaugeV1 } from "../canvasComponents/DoubleGaugeV1"
+import { DoubleGaugeV2 } from "../canvasComponents/DoubleGaugeV2"
+import { SingleGauge } from "../canvasComponents/SingleGauge"
+import { AltGauge_1 } from "../canvasComponents/AltGauge_1"
+import { AltGauge_3 } from "../canvasComponents/AltGauge_3"
+import { AltGauge_2 } from "../canvasComponents/AltGauge_2"
 
 type GaugeTypes = "single" | "v1" | "v2" | "alt1" | "alt2" | "alt3";
 

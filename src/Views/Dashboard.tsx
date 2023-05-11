@@ -3,7 +3,7 @@ import Stack from "@mui/material/Stack"
 import { useEffect, useRef, useState } from "react"
 import { LinkListBox } from "./LinkListBox"
 
-import { gaugeRoutes, demoRoutes } from "../Router/routeProvider"
+import { gaugeRoutes, demoRoutes } from "../router/routeProvider"
 
 export const DashBoard = () => {
 

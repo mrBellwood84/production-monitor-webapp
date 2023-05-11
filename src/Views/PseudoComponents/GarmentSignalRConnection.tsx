@@ -1,8 +1,8 @@
 import { HttpTransportType, HubConnectionBuilder } from "@microsoft/signalr"
 import { useEffect, useRef } from "react"
-import { useAppDispatch } from "../../Store/hooks";
-import { IProductionUpdateDTO } from "../../Models/Production/IProductionUpdateDTO";
-import { productionSlice } from "../../Store/Slices/productionSlice";
+import { useAppDispatch } from "../../store/hooks";
+import { IProductionUpdateDTO } from "../../models/production/IProductionUpdateDTO";
+import { productionSlice } from "../../store/slices/productionSlice";
 
 export const GarmentSignalRConnection = () => {
 

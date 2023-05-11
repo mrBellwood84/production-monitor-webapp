@@ -1,6 +1,6 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
-import { IProduction } from "../../Models/Production/IProduction";
-import { IProductionUpdateDTO } from "../../Models/Production/IProductionUpdateDTO";
+import { IProduction } from "../../models/production/IProduction";
+import { IProductionUpdateDTO } from "../../models/production/IProductionUpdateDTO";
 
 interface IProductionState {
     data: IProduction[];

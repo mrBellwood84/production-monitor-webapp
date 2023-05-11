@@ -1,8 +1,8 @@
 import { useEffect, useRef } from "react";
-import { rootAgent } from "../../ApiAgent/rootAgent";
-import { useAppDispatch, useAppSelector } from "../../Store/hooks"
-import { productionSlice } from "../../Store/Slices/productionSlice";
-import { IProduction } from "../../Models/Production/IProduction";
+import { rootAgent } from "../../apiAgent/rootAgent";
+import { useAppDispatch, useAppSelector } from "../../store/hooks"
+import { productionSlice } from "../../store/slices/productionSlice";
+import { IProduction } from "../../models/production/IProduction";
 
 export const GarmentDataLoader = () => {
 

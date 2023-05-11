@@ -1,5 +1,5 @@
 import { configureStore } from "@reduxjs/toolkit";
-import { productionSlice } from "./Slices/productionSlice";
+import { productionSlice } from "./slices/productionSlice";
 
 const store = configureStore({
     reducer: {
